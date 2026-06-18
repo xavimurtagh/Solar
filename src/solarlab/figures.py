@@ -752,3 +752,64 @@ def fig19_duck_curve(day_low, day_high, pen_low, pen_high, outdir: str | Path) -
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part VIII: firming the sun
+# ---------------------------------------------------------------------------
+
+def fig20_dispatch(week_df, outdir: str | Path) -> Path:
+    """A 10-day slice of solar+battery dispatch serving a flat load."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6))
+    h = week_df["hour"] / 24.0
+    ax.fill_between(h, week_df["solar"], color=_ORANGE, alpha=0.5,
+                    label="Solar generation")
+    ax.axhline(1.0, color=_BLUE, lw=2, label="Flat 24/7 load")
+    ax.set_xlabel("Day")
+    ax.set_ylabel("Power (× mean load)")
+    ax.set_ylim(0, max(3.0, week_df["solar"].max() * 1.1))
+
+    ax2 = ax.twinx()
+    ax2.plot(h, week_df["soc"], color=_GREEN, lw=2, label="Battery charge")
+    ax2.set_ylabel("Battery state of charge (hours)", color=_GREEN)
+    ax2.tick_params(axis="y", labelcolor=_GREEN)
+    ax2.set_ylim(0, week_df["soc_max"].iloc[0] * 1.05)
+    ax2.grid(False)
+
+    lines = ax.get_legend_handles_labels()[0] + ax2.get_legend_handles_labels()[0]
+    ax.legend(lines, [l.get_label() for l in lines], fontsize=8.5, loc="upper right")
+    ax.set_title("Firming: the battery soaks up midday sun and releases it after dark")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig20_dispatch.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def fig21_firm_cost(moderate_df, high_df, refs: dict, outdir: str | Path) -> Path:
+    """LCOSS vs reliability target, with fossil benchmarks — the cost of firmness."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    ax.plot(moderate_df["reliability"] * 100, moderate_df["lcoss_usd_mwh"], "o-",
+            color=_BLUE, lw=2.2, label="Firm solar+storage (moderate site)")
+    ax.plot(high_df["reliability"] * 100, high_df["lcoss_usd_mwh"], "s-",
+            color=_GREEN, lw=2.2, label="Firm solar+storage (high-resource site)")
+
+    ax.axhline(refs["gas"], color=_RED, ls="--", lw=1.3, label=f"New gas (${refs['gas']:.0f})")
+    ax.axhline(refs["coal"], color=_PURPLE, ls="--", lw=1.3, label=f"New coal (${refs['coal']:.0f})")
+    ax.axhline(refs["unfirmed"], color=_ORANGE, ls=":", lw=1.3,
+               label=f"Unfirmed solar (${refs['unfirmed']:.0f})")
+    ax.axhspan(54, 82, color=_GREEN, alpha=0.08)
+    ax.annotate("IRENA 2026 firm range\n$54-82/MWh", (80.5, 68), fontsize=7.5, color=_GREEN)
+
+    ax.set_xlabel("Reliability — share of 24/7 load met by solar+storage (%)")
+    ax.set_ylabel("Levelized cost of firm solar (LCOSS, $/MWh)")
+    ax.set_title("Firm solar beats fossils — until the last few percent of reliability")
+    ax.legend(fontsize=8, loc="upper left")
+    ax.set_ylim(0, max(moderate_df["lcoss_usd_mwh"].max() * 1.1, 200))
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig21_firm_cost.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
