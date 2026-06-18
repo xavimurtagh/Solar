@@ -1,0 +1,25 @@
+year,technology,efficiency_pct,kind,organization,source,note
+1954,Silicon,6.0,cell,Bell Laboratories,NREL Best Research-Cell Efficiency Chart 2026,First practical crystalline silicon solar cell
+1985,Silicon,20.0,cell,UNSW (Martin Green),Green et al. Solar Cell Efficiency Tables (Prog. Photovolt.),First silicon cell above 20 percent
+1999,Silicon,24.7,cell,UNSW PERL,Green et al. Solar Cell Efficiency Tables (Prog. Photovolt.),Passivated emitter rear locally-diffused cell
+2014,Silicon,25.6,cell,Panasonic (HIT),NREL Best Research-Cell Efficiency Chart 2026,Heterojunction with interdigitated back contact
+2017,Silicon,26.7,cell,Kaneka (HBC),NREL Best Research-Cell Efficiency Chart 2026,Heterojunction back-contact silicon
+2023,Silicon,26.81,cell,LONGi,NREL Best Research-Cell Efficiency Chart 2026,HBC silicon record
+2025,Silicon,27.81,cell,LONGi (HIBC),NREL Best Research-Cell Efficiency Chart 2026,Hybrid interdigitated back contact - current Si record
+2018,GaAs,29.1,cell,Alta Devices,NREL Best Research-Cell Efficiency Chart 2026,Single-junction GaAs thin film record
+2016,CdTe,22.1,cell,First Solar,NREL Best Research-Cell Efficiency Chart 2026,Cadmium telluride thin film
+2023,CdTe,23.1,cell,First Solar,Green et al. Solar Cell Efficiency Tables (Prog. Photovolt.),Cadmium telluride thin film lab record
+2009,Perovskite,3.8,cell,Miyasaka group,Kojima et al. JACS 2009 doi:10.1021/ja809598r,First reported halide perovskite photovoltaic
+2012,Perovskite,10.9,cell,Snaith / Gratzel,Green et al. Solar Cell Efficiency Tables (Prog. Photovolt.),Solid-state perovskite breakthrough
+2016,Perovskite,22.1,cell,KRICT/UNIST,NREL Best Research-Cell Efficiency Chart 2026,Single-junction perovskite
+2021,Perovskite,25.5,cell,UNIST,NREL Best Research-Cell Efficiency Chart 2026,Single-junction perovskite
+2024,Perovskite,26.7,cell,Northwestern / UNIST,NREL Best Research-Cell Efficiency Chart 2026,Single-junction perovskite lab record
+2020,Perovskite-Si tandem,29.15,cell,Oxford PV,NREL Best Research-Cell Efficiency Chart 2026,Monolithic two-terminal perovskite-on-silicon
+2022,Perovskite-Si tandem,31.3,cell,EPFL/CSEM,NREL Best Research-Cell Efficiency Chart 2026,Two-terminal tandem
+2023,Perovskite-Si tandem,33.9,cell,LONGi/KAUST,NREL Best Research-Cell Efficiency Chart 2026,Two-terminal tandem
+2024,Perovskite-Si tandem,34.6,cell,LONGi,NREL Best Research-Cell Efficiency Chart 2026,NREL-certified two-terminal tandem
+2025,Perovskite-Si tandem,35.0,cell,LONGi,NREL Best Research-Cell Efficiency Chart 2026,Current tandem record 1 cm2 (33.0 pct large area)
+2019,III-V multijunction,47.1,cell,NREL,NREL Best Research-Cell Efficiency Chart 2026,Six-junction concentrator at 143 suns
+2022,III-V multijunction,47.6,cell,Fraunhofer ISE,Fraunhofer ISE press release 2022,Four-junction concentrator at 665 suns - overall record
+2024,Silicon,25.4,module,LONGi (HIBC),Fraunhofer ISE certified module record 2024,Best silicon module efficiency record
+2026,Silicon,25.0,module,Aiko (ABC),Manufacturer datasheet / ITRPV 2026,Highest mass-produced module efficiency

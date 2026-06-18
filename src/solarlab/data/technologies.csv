@@ -1,0 +1,5 @@
+technology,module_eff_frac,gamma_pdc_per_c,status,source
+PERC,0.207,-0.0034,mature,LONGi Hi-MO 5 PERC module datasheet
+TOPCon,0.223,-0.0030,mainstream,Jinko Tiger Neo N-type TOPCon datasheet
+HJT,0.228,-0.0026,premium,REC Alpha Pure-R heterojunction datasheet
+Perovskite-Si tandem,0.245,-0.0024,emerging,Oxford PV commercial tandem module class
