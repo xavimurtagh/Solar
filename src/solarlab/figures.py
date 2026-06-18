@@ -680,3 +680,75 @@ def fig17_pyrite(sweep_df, markers, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part VII: the value of time
+# ---------------------------------------------------------------------------
+
+def fig18_value_deflation(value_df, outdir: str | Path) -> Path:
+    """Value factor and curtailment vs solar penetration — the integration wall."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    p = value_df["penetration"] * 100
+    ax.plot(p, value_df["value_factor"], "o-", color=_BLUE, lw=2.5,
+            label="Value factor (capture price / average price)")
+    ax.axhline(1.0, color=_GREY, ls=":", lw=1)
+    ax.annotate("worth the average kWh", (1, 1.01), fontsize=8, color=_GREY)
+    ax.set_xlabel("Solar share of annual demand (%)")
+    ax.set_ylabel("Value factor", color=_BLUE)
+    ax.tick_params(axis="y", labelcolor=_BLUE)
+    ax.set_ylim(0, 1.25)
+
+    ax2 = ax.twinx()
+    ax2.fill_between(p, value_df["curtailment"] * 100, color=_RED, alpha=0.2)
+    ax2.plot(p, value_df["curtailment"] * 100, color=_RED, lw=1.8, ls="--",
+             label="Curtailment (% of solar spilled)")
+    ax2.set_ylabel("Curtailment (%)", color=_RED)
+    ax2.tick_params(axis="y", labelcolor=_RED)
+    ax2.grid(False)
+
+    # Annotate real-world markers.
+    for share, lab in [(28, "California\n~today"), (45, "high-penetration\ngrid")]:
+        ax.axvline(share, color="k", ls=":", lw=0.8, alpha=0.5)
+        ax.annotate(lab, (share, 1.12), fontsize=7.5, ha="center", color="k")
+
+    lines = ax.get_legend_handles_labels()[0] + ax2.get_legend_handles_labels()[0]
+    labels = [l.get_label() for l in lines]
+    ax.legend(lines, labels, fontsize=8.5, loc="upper right")
+    ax.set_title("Solar eats its own lunch: each panel devalues the next at midday")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig18_value_deflation.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def fig19_duck_curve(day_low, day_high, pen_low, pen_high, outdir: str | Path) -> Path:
+    """Average-day demand, solar, and price at low vs high penetration."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5), sharex=True)
+    for ax, day, pen in [(ax1, day_low, pen_low), (ax2, day_high, pen_high)]:
+        h = day["hour"]
+        ax.fill_between(h, day["demand"], color=_GREY, alpha=0.25, label="Demand")
+        ax.plot(h, day["solar"], color=_ORANGE, lw=2, label="Solar")
+        ax.plot(h, day["demand"] - day["solar"], color=_BLUE, lw=2, ls="--",
+                label="Net load (the 'duck')")
+        ax.set_xlabel("Hour of day")
+        ax.set_title(f"{pen*100:.0f}% solar penetration")
+        axp = ax.twinx()
+        axp.plot(h, day["price"], color=_RED, lw=1.5, alpha=0.7)
+        axp.set_ylabel("Price ($/MWh)", color=_RED, fontsize=9)
+        axp.tick_params(axis="y", labelcolor=_RED)
+        axp.grid(False)
+        axp.set_ylim(-20, 220)
+        ax.set_xticks(range(0, 24, 4))
+    ax1.set_ylabel("Power (× mean demand)")
+    ax1.legend(fontsize=8, loc="upper left")
+    fig.suptitle("As solar grows, midday price collapses and the evening peak remains",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig19_duck_curve.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path

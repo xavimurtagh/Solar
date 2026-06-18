@@ -86,6 +86,14 @@ def _cmd_pyrite(args) -> int:
     return 0
 
 
+def _cmd_value(args) -> int:
+    from .report_value import generate_value
+
+    path = generate_value(Path(args.outdir))
+    print(f"Wrote {path} and value figures in {args.outdir}/figures/")
+    return 0
+
+
 def _cmd_all(args) -> int:
     from .report import generate
     from .report_circ import generate_circularity
@@ -93,6 +101,7 @@ def _cmd_all(args) -> int:
     from .report_land import generate_land
     from .report_opt import generate_optimizer
     from .report_pyrite import generate_pyrite
+    from .report_value import generate_value
 
     generate(Path(args.outdir))
     generate_economics(Path(args.outdir))
@@ -100,6 +109,7 @@ def _cmd_all(args) -> int:
     generate_land(Path(args.outdir))
     generate_optimizer(Path(args.outdir))
     generate_pyrite(Path(args.outdir))
+    generate_value(Path(args.outdir))
     print(f"Wrote all reports and figures in {args.outdir}/")
     return 0
 
@@ -155,6 +165,7 @@ def main(argv=None) -> int:
                      choices=["max_energy", "min_lcoe", "min_cost_for_target"])
     opt.add_argument("--target", type=float, help="target annual kWh (for min_cost_for_target)")
     sub.add_parser("pyrite", help="the pyrite voltage problem (Part VI)")
+    sub.add_parser("value", help="the value of time / deflation (Part VII)")
     sub.add_parser("all", help="generate every report and all figures")
     sub.add_parser("figures", help="generate Part I figures only")
     sub.add_parser("validate", help="run quick physics + data checks")
@@ -163,8 +174,8 @@ def main(argv=None) -> int:
     command = args.command or "report"
     return {"report": _cmd_report, "economics": _cmd_economics,
             "circularity": _cmd_circularity, "land": _cmd_land,
-            "optimize": _cmd_optimize, "pyrite": _cmd_pyrite, "all": _cmd_all,
-            "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
+            "optimize": _cmd_optimize, "pyrite": _cmd_pyrite, "value": _cmd_value,
+            "all": _cmd_all, "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
 
 
 if __name__ == "__main__":  # pragma: no cover
