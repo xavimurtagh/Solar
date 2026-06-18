@@ -1,0 +1,22 @@
+process,element,recovery_efficiency,status,source
+standard,Aluminum,0.95,commercial,Mechanical/bulk PV recycling (frame recovery) - JRC review
+standard,Glass,0.90,commercial,Mechanical recycling (glass often downcycled) - JRC review
+standard,Copper,0.50,commercial,Mechanical recycling partial cable/ribbon recovery
+standard,Silver,0.0,commercial,Bulk mechanical recycling does not recover cell silver
+standard,Silicon,0.0,commercial,Bulk mechanical recycling does not recover wafer silicon
+standard,Indium,0.0,commercial,Bulk mechanical recycling does not recover TCO indium
+standard,Lead,0.0,commercial,Bulk mechanical recycling does not recover absorber lead
+standard,Tellurium,0.0,commercial,Bulk mechanical recycling does not recover absorber tellurium
+frelp,Aluminum,0.99,pilot,FRELP Full Recovery End-of-Life Photovoltaic (JRC/Sasil)
+frelp,Glass,0.98,pilot,FRELP Full Recovery End-of-Life Photovoltaic (JRC/Sasil)
+frelp,Copper,0.99,pilot,FRELP Full Recovery End-of-Life Photovoltaic (JRC/Sasil)
+frelp,Silicon,0.95,pilot,FRELP recovers silicon metal (JRC/Sasil)
+frelp,Silver,0.94,pilot,FRELP recovers silver (JRC/Sasil)
+frelp,Indium,0.85,research,Hydrometallurgical TCO indium recovery (literature)
+frelp,Lead,0.95,research,Perovskite lead sequestration/recovery (literature)
+frelp,Tellurium,0.90,research,CdTe tellurium recovery (First Solar closed-loop)
+hydro,Silver,0.98,research,Combined hydrometallurgical + electrochemical Ag recovery (>98%)
+hydro,Silicon,0.95,research,Advanced silicon recovery (literature)
+hydro,Copper,0.99,research,Hydrometallurgical copper recovery
+hydro,Indium,0.90,research,Hydrometallurgical indium recovery (literature)
+hydro,Aluminum,0.99,research,Hydrometallurgical aluminium recovery

@@ -85,3 +85,20 @@ SITE_LATITUDE = 36.1
 SITE_LONGITUDE = -79.95
 SITE_ALTITUDE = 277.0
 SITE_TZ = "Etc/GMT+5"
+
+# --- End-of-life / circularity parameters ----------------------------------
+# Module mass per unit capacity, used to convert retired GW into recoverable
+# tonnage for validation against IRENA's ~78 Mt-by-2050 projection.
+# A framed c-Si module is ~12 kg/m^2 and ~5-6 m^2/kW -> ~65 kg/kW = 65 t/MW.
+# Source: IRENA/IEA-PVPS "End-of-Life Management: Solar PV Panels" (2016).
+MODULE_MASS_T_PER_GW = 65000.0
+
+# Weibull module-survival parameters S(a) = exp(-(a/scale)^shape).
+# "regular loss" (no early failures) vs "early loss" (infant + mid-life
+# failures).  Both assume a ~30-year nominal lifetime.
+# Source: IRENA/IEA-PVPS (2016), End-of-Life Management: Solar PV Panels.
+PV_LIFETIME_WEIBULL = {
+    "regular": (5.3759, 30.0),   # (shape, scale)
+    "early": (2.4928, 30.0),
+}
+

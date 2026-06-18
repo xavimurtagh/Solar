@@ -44,8 +44,9 @@ def test_cli_economics_and_all(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     assert main(["--outdir", "out", "economics"]) == 0
     assert (tmp_path / "out" / "REPORT_ECONOMICS.md").exists()
-    # 'all' produces both reports and all ten figures.
+    # 'all' produces every report and all figures (see test_report_circ for the
+    # full count); here we just confirm Part II is among them.
     assert main(["--outdir", "out2", "all"]) == 0
     assert (tmp_path / "out2" / "REPORT.md").exists()
     assert (tmp_path / "out2" / "REPORT_ECONOMICS.md").exists()
-    assert len(list((tmp_path / "out2" / "figures").glob("*.png"))) == 10
+    assert len(list((tmp_path / "out2" / "figures").glob("*.png"))) >= 10

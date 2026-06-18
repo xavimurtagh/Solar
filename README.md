@@ -9,11 +9,12 @@ below. Every number is either calculated here or carried with its source.
 
 ```bash
 pip install -e ".[dev]"
-python -m solarlab report      # Part I: efficiency physics  -> output/REPORT.md + figs 1-5
-python -m solarlab economics   # Part II: cost & materials    -> output/REPORT_ECONOMICS.md + figs 6-10
-python -m solarlab all         # both reports, all ten figures
-python -m solarlab validate    # quick physics + data sanity checks
-pytest                         # 66 tests pin the numbers to published values
+python -m solarlab report       # Part I: efficiency physics -> REPORT.md + figs 1-5
+python -m solarlab economics    # Part II: cost & materials  -> REPORT_ECONOMICS.md + figs 6-10
+python -m solarlab circularity  # Part III: recycling        -> REPORT_CIRCULARITY.md + figs 11-13
+python -m solarlab all          # every report, all figures
+python -m solarlab validate     # quick physics + data sanity checks
+pytest                          # 78 tests pin the numbers to published values
 ```
 
 ## The short answer
@@ -91,6 +92,24 @@ The thesis: a *good-enough, abundant, cheap* cell may matter more to
 decarbonisation than a record-efficiency scarce one — because we can actually
 build 50 TW of it. Full write-up in [`output/REPORT_ECONOMICS.md`](output/REPORT_ECONOMICS.md).
 
+## Part III — circularity turns the ceiling into a moving target
+
+The terawatt ceiling assumes every watt is freshly mined. But every panel
+installed today retires in ~30 years as feedstock. A dynamic material-flow model
+(`python -m solarlab circularity`) of the global fleet — install cohorts retiring
+on an IRENA Weibull survival curve — shows the scarce-element ceiling *rising over
+time* as recovered metal adds to supply:
+
+![The relaxed ceiling](output/figures/fig12_relaxed_ceiling.png)
+
+The nuanced, honest finding: **recycling lags the growth phase** (recovered metal
+comes from the small installs of 30 years ago, ~20% of demand by 2050) but
+**secures the steady state** — silver crosses 50% recycled content around 2058 and
+the ceiling climbs past the net-zero need. The catch: only **high-value recycling**
+(FRELP/hydrometallurgical, recovering 94% of silver and 95% of silicon) closes the
+loop; standard mechanical recycling throws both away. Build it *before* the
+retirement wave. Full write-up in [`output/REPORT_CIRCULARITY.md`](output/REPORT_CIRCULARITY.md).
+
 ## How it works
 
 | Module | Role |
@@ -104,7 +123,8 @@ build 50 TW of it. Full write-up in [`output/REPORT_ECONOMICS.md`](output/REPORT
 | `economics.py` | LCOE, energy-per-dollar, sensitivity, Monte-Carlo |
 | `materials.py` | material intensity, the terawatt ceiling, substitution |
 | `frontier.py` | the cost / space / scale Pareto frontier |
-| `figures.py` / `report.py` / `report_econ.py` / `cli.py` | figures, both reports, entry point |
+| `circularity.py` | dynamic material-flow model: the urban mine, relaxed ceiling |
+| `figures.py` / `report*.py` / `cli.py` | figures, three reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction

@@ -440,3 +440,112 @@ def fig10_sensitivity(sensitivity_df, mc_samples, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part III: circularity and the urban mine
+# ---------------------------------------------------------------------------
+
+def fig11_urban_mine(flow_df, outdir: str | Path) -> Path:
+    """The global fleet over time: installs, in-field stock, and retirements."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6))
+    yr = flow_df["year"].values
+
+    ax.bar(yr, flow_df["annual_gw"], color=_BLUE, alpha=0.55,
+           label="Annual installs (GW)")
+    ax.fill_between(yr, flow_df["retired_gw"], color=_RED, alpha=0.55,
+                    label="Annual retirements (GW) — the urban mine")
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Annual capacity (GW/yr)")
+
+    ax2 = ax.twinx()
+    ax2.plot(yr, flow_df["stock_gw"] / 1000.0, color="k", lw=2,
+             label="In-field stock (TW)")
+    ax2.set_ylabel("Installed fleet (TW)")
+    ax2.grid(False)
+
+    lines = ax.get_legend_handles_labels()
+    lines2 = ax2.get_legend_handles_labels()
+    ax.legend(lines[0] + lines2[0], lines[1] + lines2[1], fontsize=8.5,
+              loc="upper left")
+    ax.set_title("Every panel installed today is feedstock tomorrow")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig11_urban_mine.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def fig12_relaxed_ceiling(flows: dict, net_zero_tw: float, crossover_year,
+                          outdir: str | Path) -> Path:
+    """Linear vs recycling-relaxed deployment ceilings over time.
+
+    ``flows`` maps a label (e.g. "Silicon (silver-limited)") to a material_flow
+    DataFrame. The flat linear ceiling and the rising circular ceiling are drawn
+    against the ~net-zero build-rate need.
+    """
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    colors = [_BLUE, _PURPLE, _ORANGE]
+    for (label, df), col in zip(flows.items(), colors):
+        yr = df["year"].values
+        ax.plot(yr, df["ceiling_linear_tw"], ls="--", color=col, lw=1.4, alpha=0.8,
+                label=f"{label}: linear (mining only)")
+        ax.plot(yr, df["ceiling_circular_tw"], ls="-", color=col, lw=2.2,
+                label=f"{label}: + recycling")
+
+    ax.axhline(net_zero_tw, color="k", ls=":", lw=1.4)
+    ax.annotate(f"~{net_zero_tw:.0f} TW/yr needed for net zero",
+                (flows[list(flows)[0]]["year"].min() + 1, net_zero_tw + 0.08),
+                fontsize=8.5)
+    if crossover_year:
+        ax.axvline(crossover_year, color=_GREEN, ls="-.", lw=1.2)
+        ax.annotate(f"silver >50%\nrecycled ({crossover_year})",
+                    (crossover_year + 1, 0.3), fontsize=8, color=_GREEN)
+
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Maximum deployment rate (TW/yr)")
+    ax.set_title("Recycling turns the terawatt ceiling from a wall into a rising floor")
+    ax.legend(fontsize=8, loc="upper left")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig12_relaxed_ceiling.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def fig13_circularity(flow_frelp, flow_standard, virgin_avoided_t,
+                      outdir: str | Path) -> Path:
+    """(a) circularity ratio over time, FRELP vs standard; (b) virgin avoided."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+    yr = flow_frelp["year"].values
+    ax1.plot(yr, flow_frelp["circularity"] * 100, color=_GREEN, lw=2.2,
+             label="High-value recycling (FRELP)")
+    ax1.plot(yr, flow_standard["circularity"] * 100, color=_RED, lw=2.0, ls="--",
+             label="Standard mechanical recycling")
+    ax1.axhline(50, color="k", ls=":", lw=1)
+    ax1.set_xlabel("Year")
+    ax1.set_ylabel("Silver demand met by recycling (%)")
+    ax1.set_title("(a) Closing the silver loop")
+    ax1.legend(fontsize=8, loc="upper left")
+
+    # Cumulative virgin silver avoided (FRELP), tonnes -> cumulative curve.
+    cum = flow_frelp["secondary_t"].cumsum()
+    ax2.fill_between(yr, cum, color=_GREEN, alpha=0.5)
+    ax2.plot(yr, cum, color=_GREEN, lw=2)
+    ax2.annotate(f"{virgin_avoided_t/1000:,.0f} kt of virgin silver\navoided by {yr.max()}",
+                 (yr.min() + 1, cum.iloc[-1] * 0.75), fontsize=9)
+    ax2.set_xlabel("Year")
+    ax2.set_ylabel("Cumulative virgin silver avoided (t)")
+    ax2.set_title("(b) Mining we never have to do")
+
+    fig.suptitle("Standard recycling loses the silver; high-value recycling closes the loop",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig13_circularity.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
