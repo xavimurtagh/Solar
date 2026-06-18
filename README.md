@@ -9,9 +9,11 @@ below. Every number is either calculated here or carried with its source.
 
 ```bash
 pip install -e ".[dev]"
-python -m solarlab report      # writes output/REPORT.md and five figures
+python -m solarlab report      # Part I: efficiency physics  -> output/REPORT.md + figs 1-5
+python -m solarlab economics   # Part II: cost & materials    -> output/REPORT_ECONOMICS.md + figs 6-10
+python -m solarlab all         # both reports, all ten figures
 python -m solarlab validate    # quick physics + data sanity checks
-pytest                         # 41 tests pin the physics to published values
+pytest                         # 66 tests pin the numbers to published values
 ```
 
 ## The short answer
@@ -57,6 +59,38 @@ pricier 24% one — efficiency matters most where area or weight is scarce.
 
 See [`output/REPORT.md`](output/REPORT.md) for the full analysis.
 
+## Part II — dollars, space, and the materials ceiling
+
+Efficiency is a vanity metric; the world buys energy in dollars per kilowatt-hour
+and, at terawatt scale, in *grams of scarce element per watt*. The second half of
+the toolkit (`python -m solarlab economics`) computes:
+
+- **LCOE** that reproduces Lazard 2025 (utility **$56/MWh**, residential
+  **$176/MWh**) — and shows energy cost is set by *where* you deploy, not which
+  cell. On a roof, **soft costs dominate**, so a better cell barely moves the bill.
+- **The cost/space/scale frontier** — efficiency mainly buys *energy density*
+  (kWh/m²), which only pays off where area is scarce.
+- **The terawatt ceiling** — the constraint no efficiency chart shows. Dividing
+  world production of each scarce element by how much each technology needs:
+
+![The terawatt ceiling](output/figures/fig8_ceiling.png)
+
+CdTe is tellurium-limited to **0.006 TW/yr**, heterojunction and perovskite
+tandems are indium-limited to **0.055 TW/yr**, and even mainstream silicon is
+**silver-limited to ~1.2 TW/yr** — against a need of very roughly **2 TW/yr**.
+
+- **Material substitution as the breakthrough lever.** Swapping silver for
+  electroplated **copper** (1/95th the price, ~900× the supply) and indium for
+  **zinc** (AZO) lifts the scaling ceiling up to **30×**, while *lowering* material
+  cost. The boldest absorbers — kesterite (Cu-Zn-Sn-S) and iron pyrite (FeS₂,
+  "fool's gold") — abandon scarce elements entirely.
+
+![Material substitution impact](output/figures/fig9_substitution.png)
+
+The thesis: a *good-enough, abundant, cheap* cell may matter more to
+decarbonisation than a record-efficiency scarce one — because we can actually
+build 50 TW of it. Full write-up in [`output/REPORT_ECONOMICS.md`](output/REPORT_ECONOMICS.md).
+
 ## How it works
 
 | Module | Role |
@@ -67,7 +101,10 @@ See [`output/REPORT.md`](output/REPORT.md) for the full analysis.
 | `system.py` | explicit pvlib model chain + per-stage loss attribution |
 | `levers.py` | one-change-at-a-time improvement simulator |
 | `waterfall.py` | the sun → AC efficiency ladder |
-| `figures.py` / `report.py` / `cli.py` | figures, report, one-command entry point |
+| `economics.py` | LCOE, energy-per-dollar, sensitivity, Monte-Carlo |
+| `materials.py` | material intensity, the terawatt ceiling, substitution |
+| `frontier.py` | the cost / space / scale Pareto frontier |
+| `figures.py` / `report.py` / `report_econ.py` / `cli.py` | figures, both reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction

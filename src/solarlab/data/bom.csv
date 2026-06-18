@@ -1,0 +1,31 @@
+technology,element,intensity_g_per_kw,role,source
+PERC,Silver,10,front/rear metallization,ITRPV 2024 roadmap (~10 mg/W mono-PERC)
+PERC,Silicon,3000,wafer absorber,ITRPV 2024 (~3 g/W at ~150 um wafer)
+PERC,Copper,6000,interconnect + module wiring,Estimate from ribbon + cabling mass
+PERC,Aluminum,15000,module frame,Typical framed-module aluminium mass
+TOPCon,Silver,13,fired metallization (n-type),ITRPV 2024 (~120 mg/cell TOPCon)
+TOPCon,Silicon,2800,wafer absorber,ITRPV 2024 (thinner n-type wafer)
+TOPCon,Copper,6000,interconnect + module wiring,Estimate from ribbon + cabling mass
+TOPCon,Aluminum,15000,module frame,Typical framed-module aluminium mass
+HJT,Silver,20,low-temperature silver paste,ITRPV 2024 (~160 mg/cell HJT)
+HJT,Indium,10,ITO transparent conductive oxide,Literature ITO indium intensity for HJT
+HJT,Silicon,2700,wafer absorber,ITRPV 2024 (thin n-type wafer)
+HJT,Copper,6000,interconnect + module wiring,Estimate from ribbon + cabling mass
+HJT,Aluminum,15000,module frame,Typical framed-module aluminium mass
+CdTe,Tellurium,50,CdTe absorber layer,First Solar / NREL CdTe Te intensity literature
+CdTe,Cadmium,45,CdTe absorber layer,CdTe absorber stoichiometry
+CdTe,Copper,2000,back contact + wiring,Estimate (thin-film; frameless)
+Perovskite-Si tandem,Silver,15,metallization,Estimate (tandem two-terminal)
+Perovskite-Si tandem,Silicon,2700,bottom-cell wafer,Estimate (tandem silicon bottom cell)
+Perovskite-Si tandem,Indium,10,recombination/TCO layers,Estimate (tandem TCO)
+Perovskite-Si tandem,Lead,0.4,perovskite absorber,Perovskite Pb content ~0.4 g/kW literature
+Perovskite-Si tandem,Copper,6000,interconnect + module wiring,Estimate from ribbon + cabling mass
+Perovskite-Si tandem,Aluminum,15000,module frame,Typical framed-module aluminium mass
+CZTS,Copper,1500,kesterite absorber (Cu2ZnSnS4),Kesterite stoichiometry (all earth-abundant)
+CZTS,Zinc,800,kesterite absorber,Kesterite stoichiometry
+CZTS,Tin,900,kesterite absorber,Kesterite stoichiometry
+CZTS,Sulfur,700,kesterite absorber,Kesterite stoichiometry
+CZTS,Copper,3500,back contact + wiring,Estimate (thin-film)
+Pyrite,Iron,1200,FeS2 absorber (earth-abundant),Iron pyrite absorber stoichiometry (research)
+Pyrite,Sulfur,1400,FeS2 absorber,Iron pyrite absorber stoichiometry (research)
+Pyrite,Copper,2000,contacts + wiring,Estimate (thin-film)

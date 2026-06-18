@@ -1,0 +1,15 @@
+element,symbol,price_usd_per_kg,annual_production_tonnes,reserves_tonnes,crustal_abundance_ppm,source
+Silver,Ag,900,25000,640000,0.075,USGS Mineral Commodity Summaries 2025 (silver)
+Copper,Cu,9.5,23000000,1000000000,60,USGS Mineral Commodity Summaries 2025 (copper)
+Silicon,Si,8,9000000,1e12,282000,USGS MCS 2025 (silicon); solar polysilicon spot price 2024-25
+Indium,In,280,1100,30000,0.25,USGS Mineral Commodity Summaries 2025 (indium)
+Tellurium,Te,75,640,31000,0.001,USGS Mineral Commodity Summaries 2025 (tellurium)
+Gallium,Ga,300,760,600000,19,USGS Mineral Commodity Summaries 2025 (gallium)
+Lead,Pb,2.1,4500000,90000000,14,USGS Mineral Commodity Summaries 2025 (lead)
+Tin,Sn,30,290000,4300000,2.3,USGS Mineral Commodity Summaries 2025 (tin)
+Zinc,Zn,2.8,12000000,220000000,70,USGS Mineral Commodity Summaries 2025 (zinc)
+Aluminum,Al,2.4,70000000,30000000000,82000,USGS Mineral Commodity Summaries 2025 (aluminum/bauxite)
+Cadmium,Cd,3,24000,500000,0.15,USGS Mineral Commodity Summaries 2025 (cadmium)
+Iron,Fe,0.1,2500000000,1e11,56000,USGS Mineral Commodity Summaries 2025 (iron ore)
+Sulfur,S,0.15,80000000,5e9,350,USGS Mineral Commodity Summaries 2025 (sulfur)
+Antimony,Sb,13,83000,2000000,0.2,USGS Mineral Commodity Summaries 2025 (antimony)

@@ -1,0 +1,19 @@
+deployment,component,usd_per_w,source
+utility,module,0.27,NREL Q1 2024 PV cost benchmark (utility-scale; 2023 USD)
+utility,inverter,0.06,NREL Q1 2024 PV cost benchmark
+utility,structural_bos,0.12,NREL Q1 2024 PV cost benchmark (racking/tracker)
+utility,electrical_bos,0.13,NREL Q1 2024 PV cost benchmark
+utility,install_labor,0.10,NREL Q1 2024 PV cost benchmark
+utility,soft_costs,0.22,NREL Q1 2024 PV cost benchmark (EPC overhead/margin/dev)
+commercial,module,0.30,NREL Q1 2024 PV cost benchmark (commercial rooftop)
+commercial,inverter,0.10,NREL Q1 2024 PV cost benchmark
+commercial,structural_bos,0.13,NREL Q1 2024 PV cost benchmark
+commercial,electrical_bos,0.16,NREL Q1 2024 PV cost benchmark
+commercial,install_labor,0.25,NREL Q1 2024 PV cost benchmark
+commercial,soft_costs,0.66,NREL Q1 2024 PV cost benchmark (permitting/overhead/margin)
+residential,module,0.34,NREL Q1 2024 PV cost benchmark (residential; 2023 USD)
+residential,inverter,0.20,NREL Q1 2024 PV cost benchmark
+residential,structural_bos,0.10,NREL Q1 2024 PV cost benchmark (racking)
+residential,electrical_bos,0.18,NREL Q1 2024 PV cost benchmark
+residential,install_labor,0.30,NREL Q1 2024 PV cost benchmark
+residential,soft_costs,1.73,NREL Q1 2024 PV cost benchmark (sales/permitting/overhead/margin)
