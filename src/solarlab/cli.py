@@ -54,16 +54,42 @@ def _cmd_land(args) -> int:
     return 0
 
 
+def _cmd_optimize(args) -> int:
+    # With a custom budget/area, print a one-off recommendation; otherwise
+    # generate the Part V report.
+    if args.budget or args.area:
+        from .optimizer import Constraints, optimize
+
+        res = optimize(args.objective,
+                       Constraints(budget_usd=args.budget, area_m2=args.area,
+                                   deployment=args.deployment, target_kwh=args.target))
+        if not res["feasible"]:
+            print("No feasible option meets the target within the constraints.")
+            return 1
+        b = res["best"]
+        print(f"Recommended: {b['technology']} at {b['deployment']} scale")
+        print(f"  capacity {b['capacity_kw']:,.1f} kW | annual {b['annual_kwh']:,.0f} kWh"
+              f" | ${b['total_cost_usd']:,.0f} | binds: {res.get('binding','n/a')}")
+        return 0
+    from .report_opt import generate_optimizer
+
+    path = generate_optimizer(Path(args.outdir))
+    print(f"Wrote {path} and optimiser figure in {args.outdir}/figures/")
+    return 0
+
+
 def _cmd_all(args) -> int:
     from .report import generate
     from .report_circ import generate_circularity
     from .report_econ import generate_economics
     from .report_land import generate_land
+    from .report_opt import generate_optimizer
 
     generate(Path(args.outdir))
     generate_economics(Path(args.outdir))
     generate_circularity(Path(args.outdir))
     generate_land(Path(args.outdir))
+    generate_optimizer(Path(args.outdir))
     print(f"Wrote all reports and figures in {args.outdir}/")
     return 0
 
@@ -111,6 +137,13 @@ def main(argv=None) -> int:
     sub.add_parser("economics", help="generate the cost/materials report (Part II)")
     sub.add_parser("circularity", help="generate the recycling report (Part III)")
     sub.add_parser("land", help="generate the land-use report (Part IV)")
+    opt = sub.add_parser("optimize", help="techno-economic optimiser (Part V)")
+    opt.add_argument("--budget", type=float, help="budget in USD")
+    opt.add_argument("--area", type=float, help="available module area in m^2")
+    opt.add_argument("--deployment", choices=["utility", "commercial", "residential"])
+    opt.add_argument("--objective", default="max_energy",
+                     choices=["max_energy", "min_lcoe", "min_cost_for_target"])
+    opt.add_argument("--target", type=float, help="target annual kWh (for min_cost_for_target)")
     sub.add_parser("all", help="generate every report and all figures")
     sub.add_parser("figures", help="generate Part I figures only")
     sub.add_parser("validate", help="run quick physics + data checks")
@@ -118,7 +151,8 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     command = args.command or "report"
     return {"report": _cmd_report, "economics": _cmd_economics,
-            "circularity": _cmd_circularity, "land": _cmd_land, "all": _cmd_all,
+            "circularity": _cmd_circularity, "land": _cmd_land,
+            "optimize": _cmd_optimize, "all": _cmd_all,
             "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
 
 

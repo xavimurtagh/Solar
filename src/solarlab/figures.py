@@ -604,3 +604,38 @@ def fig15_diurnal(profile_df, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part V: the techno-economic optimiser
+# ---------------------------------------------------------------------------
+
+def fig16_optimizer(scenarios: list, outdir: str | Path) -> Path:
+    """Achievable annual energy per technology under different binding constraints.
+
+    ``scenarios`` is a list of (title, ranked_df, winner_tech). Each panel shows
+    that the optimal cell flips with the binding constraint.
+    """
+    _style()
+    n = len(scenarios)
+    fig, axes = plt.subplots(1, n, figsize=(6 * n, 5.5))
+    if n == 1:
+        axes = [axes]
+    for ax, (title, ranked, winner) in zip(axes, scenarios):
+        d = ranked.sort_values("annual_kwh")
+        colors = [_GREEN if t == winner else _BLUE for t in d["technology"]]
+        ax.barh(d["technology"], d["annual_kwh"], color=colors, alpha=0.85)
+        for i, (_, r) in enumerate(d.iterrows()):
+            ax.annotate(f"{r['annual_kwh']:,.0f}", (r["annual_kwh"], i),
+                        textcoords="offset points", xytext=(4, 0), va="center",
+                        fontsize=8)
+        ax.set_xlabel("Achievable annual energy (kWh/yr)")
+        ax.set_title(title)
+        ax.margins(x=0.18)
+    fig.suptitle("The optimal cell flips with the binding constraint",
+                 fontsize=13)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig16_optimizer.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
