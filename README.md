@@ -9,12 +9,17 @@ below. Every number is either calculated here or carried with its source.
 
 ```bash
 pip install -e ".[dev]"
-python -m solarlab report       # Part I: efficiency physics -> REPORT.md + figs 1-5
-python -m solarlab economics    # Part II: cost & materials  -> REPORT_ECONOMICS.md + figs 6-10
-python -m solarlab circularity  # Part III: recycling        -> REPORT_CIRCULARITY.md + figs 11-13
-python -m solarlab all          # every report, all figures
-python -m solarlab validate     # quick physics + data sanity checks
-pytest                          # 78 tests pin the numbers to published values
+python -m solarlab report       # Part I:   efficiency physics  -> REPORT.md + figs 1-5
+python -m solarlab economics    # Part II:  cost & materials    -> REPORT_ECONOMICS.md + figs 6-10
+python -m solarlab circularity  # Part III: recycling           -> REPORT_CIRCULARITY.md + figs 11-13
+python -m solarlab land         # Part IV:  land use / dual-use  -> REPORT_LAND.md + figs 14-15
+python -m solarlab optimize     # Part V:   the optimiser        -> REPORT_OPTIMIZER.md + fig 16
+python -m solarlab pyrite       # Part VI:  the pyrite problem    -> REPORT_PYRITE.md + fig 17
+python -m solarlab all          # every report, all 17 figures
+pytest                          # 106 tests pin the numbers to published values
+
+# the optimiser is also an interactive tool:
+python -m solarlab optimize --area 40 --budget 80000 --deployment residential
 ```
 
 ## The short answer
@@ -110,6 +115,34 @@ the ceiling climbs past the net-zero need. The catch: only **high-value recyclin
 loop; standard mechanical recycling throws both away. Build it *before* the
 retirement wave. Full write-up in [`output/REPORT_CIRCULARITY.md`](output/REPORT_CIRCULARITY.md).
 
+## Part IV — optimising for space: land, dual-use, grid value
+
+Module efficiency is energy per *panel* area; siting is about energy per *land*
+area, and land can do two jobs (`python -m solarlab land`). The **Land Equivalent
+Ratio** shows **agrivoltaics** (LER ~1.55) and **vertical bifacial east-west**
+(LER ~1.81) out-produce single-use land — and vertical east-west shifts generation
+off the midday glut to the valuable morning/evening shoulders. **Floating PV** uses
+no land and gains ~3% from cooling. See [`output/REPORT_LAND.md`](output/REPORT_LAND.md).
+
+## Part V — the optimiser: which cell wins, and why
+
+`python -m solarlab optimize` turns the frontier into a decision and reports which
+constraint binds. The optimal cell **flips**: when *area* binds, the most efficient
+cell wins (tandem on a small roof); when *budget* binds, the cheapest cell wins
+(PERC at utility scale gives the most capacity per dollar). There is no single
+"best" cell — efficiency is worth paying for exactly when space, not money, is
+scarce. See [`output/REPORT_OPTIMIZER.md`](output/REPORT_OPTIMIZER.md).
+
+## Part VI — fool's gold: the pyrite voltage problem
+
+Iron pyrite (FeS₂) is iron + sulfur — essentially unlimited — with a near-ideal
+0.95 eV bandgap, yet makes a ~3% cell. A non-ideal extension of the
+Shockley-Queisser model (`python -m solarlab pyrite`) pins the blame on a
+catastrophic **voltage** deficit (external radiative efficiency ~1e-9 collapses Voc
+to ~0.2 V). The prize: cure the surface defects to silicon-grade quality and pyrite
+reaches **22–25%** — a cheap, infinitely-scalable cell. The physics permits 31%;
+only the defects forbid it. See [`output/REPORT_PYRITE.md`](output/REPORT_PYRITE.md).
+
 ## How it works
 
 | Module | Role |
@@ -124,7 +157,10 @@ retirement wave. Full write-up in [`output/REPORT_CIRCULARITY.md`](output/REPORT
 | `materials.py` | material intensity, the terawatt ceiling, substitution |
 | `frontier.py` | the cost / space / scale Pareto frontier |
 | `circularity.py` | dynamic material-flow model: the urban mine, relaxed ceiling |
-| `figures.py` / `report*.py` / `cli.py` | figures, three reports, entry point |
+| `landuse.py` | land-use efficiency, Land Equivalent Ratio, diurnal grid value |
+| `optimizer.py` | constrained pick of technology + deployment for a goal |
+| `sq.py` (ERE) | non-ideal device model for the pyrite voltage problem |
+| `figures.py` / `report*.py` / `cli.py` | 17 figures, six reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction

@@ -30,6 +30,19 @@ SI_EG_EV = 1.12                    # crystalline silicon (300 K)
 GAAS_EG_EV = 1.42                  # gallium arsenide
 CDTE_EG_EV = 1.50                  # cadmium telluride
 PEROVSKITE_EG_EV = 1.55            # typical methylammonium lead halide perovskite
+PYRITE_EG_EV = 0.95                # iron pyrite FeS2 ("fool's gold")
+
+# External radiative efficiency (ERE / external luminescence yield): the fraction
+# of recombination that is radiative. ERE = 1 is the ideal Shockley-Queisser
+# cell; lower ERE means non-radiative recombination steals voltage via
+# qVoc = qVoc_radiative + kT*ln(ERE).
+# Sources: Green 2012 (Prog. Photovolt.) for the ERE framework; GaAs record cells
+# reach ERE ~0.2-0.3; silicon ~1e-3; iron pyrite is notoriously ~1e-6-1e-8 due to
+# surface states / sulfur vacancies / Fermi-level pinning.
+ERE_GAAS_RECORD = 0.23
+ERE_SILICON = 1e-3
+PYRITE_ERE_TODAY = 1e-9            # observed pyrite cells: Voc collapses to ~0.2 V
+PYRITE_ERE_PASSIVATED = 1e-2       # hypothetical: surface defects largely cured
 
 # --- Reference efficiency limits & records (percent) -----------------------
 # Practical single-junction silicon limit including intrinsic Auger

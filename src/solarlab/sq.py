@@ -106,14 +106,21 @@ def solve_cell(jsc: float, j0: float, t_k: float = T_CELL):
     return voc, vmp, jmp, ff
 
 
-def sq_cell(eg_ev: float, spec: SpectrumIntegrals, t_k: float = T_CELL) -> SQResult:
-    """Full Shockley-Queisser operating point at bandgap ``eg_ev``.
+def sq_cell(eg_ev: float, spec: SpectrumIntegrals, t_k: float = T_CELL,
+           ere: float = 1.0) -> SQResult:
+    """Full operating point at bandgap ``eg_ev`` and radiative efficiency ``ere``.
 
     Assumes unity quantum efficiency: every photon with ``E >= Eg`` produces one
     collected electron, so ``Jsc = q * (photon flux above Eg)``.
+
+    ``ere`` (external radiative efficiency, default 1.0 = ideal Shockley-Queisser)
+    captures non-radiative recombination: the dark current scales as
+    ``J0 = J0_radiative / ERE``, which lowers the voltage by ``kT*ln(ERE)``. This
+    is the lever that explains why a material with an ideal bandgap, like iron
+    pyrite, can still make a hopeless cell.
     """
     jsc = Q * float(spec.photon_flux_above(eg_ev))
-    j0 = j0_radiative(eg_ev, t_k)
+    j0 = j0_radiative(eg_ev, t_k) / ere
     voc, vmp, jmp, ff = solve_cell(jsc, j0, t_k)
     eta = (vmp * jmp) / spec.p_in_w_m2
     return SQResult(
@@ -246,3 +253,31 @@ def optimal_tandem(spec: SpectrumIntegrals) -> dict:
             if r["eta"] > best["eta"]:
                 best = r
     return best
+
+
+# --- Non-ideal cells: the External Radiative Efficiency (ERE) lever ----------
+
+def ere_sweep(eg_ev: float, spec: SpectrumIntegrals,
+              ere_values=None, t_k: float = T_CELL):
+    """Efficiency and Voc versus material quality (ERE) at a fixed bandgap.
+
+    The columns are ``ere``, ``eta`` and ``voc_v``. ``ere = 1`` is the radiative
+    (Shockley-Queisser) ceiling; lower ERE is a more defective material.
+    """
+    import numpy as np
+    import pandas as pd
+
+    if ere_values is None:
+        ere_values = np.logspace(-9, 0, 60)
+    rows = [sq_cell(eg_ev, spec, t_k=t_k, ere=float(e)) for e in ere_values]
+    return pd.DataFrame({
+        "ere": list(ere_values),
+        "eta": [r.eta for r in rows],
+        "voc_v": [r.voc_v for r in rows],
+    })
+
+
+def voc_deficit(eg_ev: float, spec: SpectrumIntegrals, ere: float,
+                t_k: float = T_CELL) -> float:
+    """Voltage lost to non-radiative recombination: Voc(ERE=1) - Voc(ERE)."""
+    return sq_cell(eg_ev, spec, t_k=t_k).voc_v - sq_cell(eg_ev, spec, t_k=t_k, ere=ere).voc_v

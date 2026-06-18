@@ -639,3 +639,44 @@ def fig16_optimizer(scenarios: list, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part VI: the pyrite voltage problem
+# ---------------------------------------------------------------------------
+
+def fig17_pyrite(sweep_df, markers, outdir: str | Path) -> Path:
+    """Pyrite efficiency and Voc vs material quality (ERE), with key markers.
+
+    ``markers`` is a list of (label, ere, eta, voc).
+    """
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    ax.plot(sweep_df["ere"], sweep_df["eta"] * 100, color=_BLUE, lw=2.5,
+            label="Efficiency")
+    ax.set_xscale("log")
+    ax.set_xlabel("External radiative efficiency (ERE) — material quality →")
+    ax.set_ylabel("Efficiency (%)", color=_BLUE)
+    ax.tick_params(axis="y", labelcolor=_BLUE)
+
+    ax2 = ax.twinx()
+    ax2.plot(sweep_df["ere"], sweep_df["voc_v"], color=_ORANGE, lw=2, ls="--",
+             label="Open-circuit voltage")
+    ax2.set_ylabel("Voc (V)", color=_ORANGE)
+    ax2.tick_params(axis="y", labelcolor=_ORANGE)
+    ax2.grid(False)
+
+    for label, ere, eta, voc in markers:
+        ax.scatter([ere], [eta * 100], color=_RED, zorder=5, s=40)
+        ax.annotate(f"{label}\n{eta*100:.0f}%", (ere, eta * 100),
+                    textcoords="offset points", xytext=(0, 10), ha="center",
+                    fontsize=8)
+    ax.set_title("Pyrite's prize: cure the voltage and 'fool's gold' becomes a real cell")
+    lines = ax.get_legend_handles_labels()[0] + ax2.get_legend_handles_labels()[0]
+    labels = ["Efficiency", "Open-circuit voltage"]
+    ax.legend(lines, labels, fontsize=9, loc="center left")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig17_pyrite.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
