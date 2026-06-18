@@ -67,6 +67,7 @@ class SimResult:
     specific_yield: float     # kWh per kWp
     monthly: pd.DataFrame
     attribution: pd.DataFrame
+    hourly_ac_w: pd.Series | None = None   # 8760-hour AC power (for diurnal profiles)
 
 
 def reference_weather():
@@ -213,4 +214,5 @@ def simulate(sc: Scenario, weather=None) -> SimResult:
         scenario=sc, ghi_kwh_m2=ghi_kwh_m2, poa_kwh_m2=poa_kwh_m2,
         e_dc_kwh=e_dc, e_ac_kwh=e_ac, pr=pr, eta_system=eta_system,
         specific_yield=specific_yield, monthly=monthly, attribution=attribution,
+        hourly_ac_w=pac,
     )

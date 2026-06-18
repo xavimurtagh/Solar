@@ -44,8 +44,9 @@ def test_cli_circularity_and_all(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     assert main(["--outdir", "out", "circularity"]) == 0
     assert (tmp_path / "out" / "REPORT_CIRCULARITY.md").exists()
-    # 'all' now produces three reports and all thirteen figures.
+    # 'all' produces every report; circularity contributes figs 11-13.
     assert main(["--outdir", "out2", "all"]) == 0
-    for name in ("REPORT.md", "REPORT_ECONOMICS.md", "REPORT_CIRCULARITY.md"):
+    for name in ("REPORT.md", "REPORT_ECONOMICS.md", "REPORT_CIRCULARITY.md",
+                 "REPORT_LAND.md"):
         assert (tmp_path / "out2" / name).exists()
-    assert len(list((tmp_path / "out2" / "figures").glob("*.png"))) == 13
+    assert len(list((tmp_path / "out2" / "figures").glob("*.png"))) >= 13

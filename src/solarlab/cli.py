@@ -46,14 +46,24 @@ def _cmd_circularity(args) -> int:
     return 0
 
 
+def _cmd_land(args) -> int:
+    from .report_land import generate_land
+
+    path = generate_land(Path(args.outdir))
+    print(f"Wrote {path} and land-use figures in {args.outdir}/figures/")
+    return 0
+
+
 def _cmd_all(args) -> int:
     from .report import generate
     from .report_circ import generate_circularity
     from .report_econ import generate_economics
+    from .report_land import generate_land
 
     generate(Path(args.outdir))
     generate_economics(Path(args.outdir))
     generate_circularity(Path(args.outdir))
+    generate_land(Path(args.outdir))
     print(f"Wrote all reports and figures in {args.outdir}/")
     return 0
 
@@ -100,6 +110,7 @@ def main(argv=None) -> int:
     sub.add_parser("report", help="generate the efficiency report (Part I, default)")
     sub.add_parser("economics", help="generate the cost/materials report (Part II)")
     sub.add_parser("circularity", help="generate the recycling report (Part III)")
+    sub.add_parser("land", help="generate the land-use report (Part IV)")
     sub.add_parser("all", help="generate every report and all figures")
     sub.add_parser("figures", help="generate Part I figures only")
     sub.add_parser("validate", help="run quick physics + data checks")
@@ -107,7 +118,7 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     command = args.command or "report"
     return {"report": _cmd_report, "economics": _cmd_economics,
-            "circularity": _cmd_circularity, "all": _cmd_all,
+            "circularity": _cmd_circularity, "land": _cmd_land, "all": _cmd_all,
             "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
 
 

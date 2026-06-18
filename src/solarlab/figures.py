@@ -549,3 +549,58 @@ def fig13_circularity(flow_frelp, flow_standard, virgin_avoided_t,
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part IV: land use — dual-use and grid-value siting
+# ---------------------------------------------------------------------------
+
+def fig14_landuse(land_df, outdir: str | Path) -> Path:
+    """Land Equivalent Ratio: energy + crop yield stacked, vs the LER=1 line."""
+    _style()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    df = land_df.sort_values("ler")
+    y = np.arange(len(df))
+    ax.barh(y, df["energy_fraction"], color=_ORANGE, alpha=0.85, label="Energy yield")
+    ax.barh(y, df["crop_fraction"], left=df["energy_fraction"], color=_GREEN,
+            alpha=0.85, label="Retained crop yield")
+    ax.axvline(1.0, color="k", ls="--", lw=1.3)
+    ax.annotate("LER = 1\n(single-use breakeven)", (1.0, -0.45), fontsize=8)
+    for i, (_, r) in enumerate(df.iterrows()):
+        ax.annotate(f"LER {r['ler']:.2f}", (r["ler"], i), textcoords="offset points",
+                    xytext=(5, 0), va="center", fontsize=9, fontweight="bold")
+    ax.set_yticks(y)
+    ax.set_yticklabels(df["archetype"])
+    ax.set_xlabel("Land Equivalent Ratio (energy fraction + crop fraction)")
+    ax.set_title("Dual-use can produce ~1.5-1.8x more per hectare than single use")
+    ax.legend(fontsize=8.5, loc="lower right")
+    ax.margins(x=0.14)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig14_landuse.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def fig15_diurnal(profile_df, outdir: str | Path) -> Path:
+    """Average-day generation shape: fixed-optimal vs vertical east-west."""
+    _style()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    h = profile_df["hour"]
+    ax.plot(h, profile_df["fixed_optimal"], "o-", color=_ORANGE, lw=2,
+            label="Fixed optimal tilt (midday peak)")
+    ax.plot(h, profile_df["vertical_ew"], "s-", color=_BLUE, lw=2,
+            label="Vertical bifacial E-W (morning + evening peaks)")
+    ax.axvspan(11, 14, color=_GREY, alpha=0.12)
+    ax.annotate("midday solar glut\n(low value)", (12.5, 0.2), ha="center",
+                fontsize=8, color=_GREY)
+    ax.set_xlabel("Hour of day")
+    ax.set_ylabel("Generation (fraction of own peak)")
+    ax.set_title("Vertical east-west shifts power to when the grid needs it most")
+    ax.set_xticks(range(0, 24, 3))
+    ax.legend(fontsize=8.5, loc="upper center")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig15_diurnal.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
