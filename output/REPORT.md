@@ -102,7 +102,7 @@ everything after it is engineering — which means everything after it is
 
 ## 4. Seventy years of progress (and why $/kWh, not %, is the real prize)
 
-Silicon went from 27.8% in the lab while the commercial
+Silicon now reaches 27.8% in the lab while the commercial
 fleet still averages 22.2% — a standing **5.6
 percentage-point** lab-to-market gap. Progress by technology:
 
@@ -132,7 +132,7 @@ or where it reduces every area-proportional balance-of-system cost at once.
 ## 5. A real rooftop, hour by hour
 
 To get honest *system* numbers rather than datasheet ones, the toolkit simulates
-a 5 kW close mount glass glass array for a full
+a 5 kW rooftop array (close-mount glass-glass) for a full
 8760-hour year at Greensboro, NC (TMY3 723170) (pvlib, Hay-Davies transposition, Sandia thermal
 model, PVWatts losses).
 
@@ -186,8 +186,9 @@ simply fits more watts on the same roof):
   concentrate.
 - **Tracking and bifaciality** are large, mature gains for ground-mounted plant.
 - **Cooling, anti-soiling, better inverters and module-level electronics** are
-  smaller but cheap, reliable, and additive — collectively a meaningful slice of
-  the 83 points lost between the module rating and delivered AC.
+  smaller but cheap, reliable, and additive — together they recover a meaningful
+  slice of the system losses that separate a module's rating from the energy
+  actually delivered to the meter.
 
 If the goal is to change the energy industry, the two-front strategy is clear:
 **push multi-junction cells to break the 34% physics ceiling**,

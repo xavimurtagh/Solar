@@ -219,7 +219,7 @@ everything after it is engineering — which means everything after it is
 
 ## 4. Seventy years of progress (and why $/kWh, not %, is the real prize)
 
-Silicon went from {r.gap['best_cell_pct']:.1f}% in the lab while the commercial
+Silicon now reaches {r.gap['best_cell_pct']:.1f}% in the lab while the commercial
 fleet still averages {r.gap['market_pct']:.1f}% — a standing **{r.gap['gap_pp']:.1f}
 percentage-point** lab-to-market gap. Progress by technology:
 
@@ -241,7 +241,7 @@ or where it reduces every area-proportional balance-of-system cost at once.
 ## 5. A real rooftop, hour by hour
 
 To get honest *system* numbers rather than datasheet ones, the toolkit simulates
-a {BASE.pdc0_w/1000:.0f} kW {BASE.racking.replace('_', ' ')} array for a full
+a {BASE.pdc0_w/1000:.0f} kW rooftop array (close-mount glass-glass) for a full
 8760-hour year at {C.SITE_NAME} (pvlib, Hay-Davies transposition, Sandia thermal
 model, PVWatts losses).
 
@@ -278,8 +278,9 @@ simply fits more watts on the same roof):
   concentrate.
 - **Tracking and bifaciality** are large, mature gains for ground-mounted plant.
 - **Cooling, anti-soiling, better inverters and module-level electronics** are
-  smaller but cheap, reliable, and additive — collectively a meaningful slice of
-  the {100-system_eff:.0f} points lost between the module rating and delivered AC.
+  smaller but cheap, reliable, and additive — together they recover a meaningful
+  slice of the system losses that separate a module's rating from the energy
+  actually delivered to the meter.
 
 If the goal is to change the energy industry, the two-front strategy is clear:
 **push multi-junction cells to break the {r.opt.eta*100:.0f}% physics ceiling**,
