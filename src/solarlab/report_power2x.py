@@ -104,7 +104,42 @@ enough for **~{r.glut_high['hydrogen_mt']:.1f} million tonnes of hydrogen** — 
 energy that was being thrown away. The "duck curve" problem and the "where do we
 get green hydrogen" problem are the same problem, and they solve each other.
 
-## 3. What near-free solar unlocks
+## 3. How, exactly, does electricity become *things*?
+
+"Make molecules from sunlight" sounds like hand-waving, so here is the actual
+chain, step by physical step. The pivot is **water-splitting**: pass a solar
+current through water and it tears apart into hydrogen and oxygen
+(`2 H₂O + electricity → 2 H₂ + O₂`). That hydrogen is the master key — almost
+everything else is built from it:
+
+- **Fertiliser (ammonia).** Combine that hydrogen with nitrogen pulled straight
+  from the air, over an iron catalyst at heat and pressure (the century-old
+  Haber-Bosch reaction: `N₂ + 3 H₂ → 2 NH₃`). Ammonia is the nitrogen fertiliser
+  that already grows roughly half the world's food — today made from fossil gas,
+  tomorrow from sunlight and air.
+- **Steel.** Steel is made by stripping the oxygen out of iron ore. Today that is
+  done with coal, which dumps CO₂ (`Fe₂O₃ + 3 CO → 2 Fe + 3 CO₂`). Swap in
+  hydrogen and the *exhaust becomes water* (`Fe₂O₃ + 3 H₂ → 2 Fe + 3 H₂O`). Same
+  steel, no carbon — "green steel".
+- **Fuels for planes and ships.** Capture CO₂ from the air (see below), react it
+  with the hydrogen, and you can build liquid hydrocarbons — jet fuel, diesel,
+  methanol — molecule by molecule (the Fischer-Tropsch process). These are
+  drop-in fuels for the things batteries can't easily move.
+- **Carbon removal.** Big fans push air over a chemical sponge that grabs CO₂;
+  gentle heat then releases it, pure, to be buried or turned into the fuels above.
+  It is electricity-hungry, which is exactly why it wants the free midday glut.
+- **Fresh water.** Electric pumps force seawater through a fine membrane that lets
+  water molecules through but blocks the salt (reverse osmosis). A few
+  kilowatt-hours buys a tonne of drinking water.
+- **Industrial heat.** Much of industry just needs *heat*. Solar electricity can
+  charge a "thermal battery" — a stack of cheap firebricks or rocks heated to
+  ~1500 °C at midday — that releases that heat steadily to a factory all night.
+
+Notice the pattern: every one of these is a **flexible, interruptible** load that
+is happy to run hard when the sun blazes and idle when it sets. That is the whole
+trick — they are designed *around* solar's rhythm, not in spite of it.
+
+## 4. What near-free solar unlocks
 
 Because electricity is the dominant input to all of these processes, driving its
 price toward zero at midday doesn't just make them cheaper — it makes whole new
@@ -121,7 +156,7 @@ all industrial CO2 — decarbonise. **This is how solar changes the energy spher
 not by lighting bulbs more cheaply, but by becoming the feedstock for the physical
 economy whenever the sun is up.**
 
-## 4. Assumptions and limitations
+## 5. Assumptions and limitations
 
 - LCOH uses representative techno-economics (51 kWh/kg, $500-700/kW electrolyser,
   8%/20-yr finance); it reproduces the 2026 $2.50-5/kg range but a real project
@@ -132,7 +167,7 @@ economy whenever the sun is up.**
 - Flexible-demand dispatch is a simple surplus-following heuristic; it captures the
   glut but is not a market or unit-commitment model.
 
-## 5. References
+## 6. References
 
 - IEA, *Global Hydrogen Review* (2025-26); BNEF / RMI green-hydrogen cost analyses.
 - Electrolyser CAPEX and LCOH 2026: $700-1000/kW falling; LCOH $2.50-5/kg.

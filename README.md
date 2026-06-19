@@ -28,8 +28,12 @@ python -m solarlab firming      # Part VIII: firm 24/7 solar      -> REPORT_FIRM
 python -m solarlab power2x      # Part IX:   solar-to-molecules   -> REPORT_POWER2X.md + figs 22-23
 python -m solarlab space        # Part X:    space-based solar    -> REPORT_SPACE.md + fig 24
 python -m solarlab future       # Part XI:   trajectory + manifesto -> REPORT_FUTURE.md + fig 25
-python -m solarlab all          # every report, all 25 figures
-pytest                          # 149 tests pin the numbers to published values
+python -m solarlab metal        # Part XII:  copper vs silver       -> REPORT_METAL.md + fig 26
+python -m solarlab renewable    # Part XIII: truly renewable?       -> REPORT_RENEWABLE.md + fig 27
+python -m solarlab pyrite       # Part XIV:  pyrite voltage roadmap -> (+ fig 28 in REPORT_PYRITE.md)
+python -m solarlab spacedeep    # Part XV:   space solar, seriously -> REPORT_SPACEDEEP.md + fig 29
+python -m solarlab all          # every report, all 29 figures
+pytest                          # 177 tests pin the numbers to published values
 
 # the optimiser is also an interactive tool:
 python -m solarlab optimize --area 40 --budget 80000 --deployment residential
@@ -187,6 +191,24 @@ exactly when they're least valuable.
 The through-line: **stop shaping solar to fit demand; start shaping demand to fit
 the sun.** Full write-up in [`output/REPORT_FUTURE.md`](output/REPORT_FUTURE.md).
 
+## Parts XII–XV — stress-testing the story
+
+Four analyses that pressure-test the project's own claims:
+
+- **Part XII — the copper question.** Modelling efficiency *and* longevity (not just
+  cost), copper's LCOE edge over silver turns out razor-thin — a +0.05%/yr
+  reliability slip erases it. Copper's real value is **abundance, not price**.
+- **Part XIII — truly renewable?** A 50 TW silver fleet *without* recycling exhausts
+  reserves in ~30 years; a tight recycling loop (metals refine back to full purity)
+  stretches that to ~190 years, and copper makes it effectively infinite. Solar can
+  be truly renewable — but only with **a closed loop *and* abundant metals**.
+- **Part XIV — cracking pyrite.** A quantified voltage-repair roadmap: surface
+  passivation → bulk control → carrier-selective contacts takes "fool's gold" from
+  6% to 25%, turning a vague "what if" into measurable engineering targets.
+- **Part XV — space solar, seriously.** Launch carbon pays back in ~3 months, but
+  scaling to power the *whole* world needs ~240 rocket launches a day for 30 years.
+  Verdict: a premium firm-power **slice**, not the bulk.
+
 ## How it works
 
 | Module | Role |
@@ -209,7 +231,11 @@ the sun.** Full write-up in [`output/REPORT_FUTURE.md`](output/REPORT_FUTURE.md)
 | `power2x.py` | green-hydrogen / power-to-X economics, demand inversion |
 | `spacepv.py` | space-based solar launch-cost economics |
 | `learning.py` | Wright's-law fit and cost trajectory to 2050 |
-| `figures.py` / `report*.py` / `cli.py` | 25 figures, eleven reports, entry point |
+| `metallization.py` | copper-vs-silver efficiency/longevity/LCOE |
+| `renewable.py` | closed-loop materials and the runway to "truly renewable" |
+| `pyrite.py` | the pyrite voltage-repair roadmap |
+| `spacedeep.py` | space-solar launch carbon, beaming chain, scalability |
+| `figures.py` / `report*.py` / `cli.py` | 29 figures, fourteen reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction
