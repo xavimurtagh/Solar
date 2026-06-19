@@ -1113,3 +1113,52 @@ def fig28_pyrite_roadmap(roadmap_df, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part XV: space solar, seriously
+# ---------------------------------------------------------------------------
+
+def fig29_spacedeep(beam_df, scale_df, outdir: str | Path) -> Path:
+    """(a) the orbit->ground beaming chain; (b) launch cadence vs SBSP scale."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+
+    # (a) cumulative efficiency cascade.
+    stages = ["Orbit DC"] + list(beam_df["stage"])
+    cum = [1.0] + list(beam_df["cumulative_eff"])
+    ax1.step(range(len(cum)), [c * 100 for c in cum], where="post", color=_BLUE, lw=2)
+    ax1.fill_between(range(len(cum)), [c * 100 for c in cum], step="post",
+                     color=_BLUE, alpha=0.15)
+    ax1.set_xticks(range(len(cum)))
+    ax1.set_xticklabels(["Orbit\nDC", "TX", "Atmos", "Rectenna", "Ground\nDC"],
+                        fontsize=8)
+    for i, c in enumerate(cum):
+        ax1.annotate(f"{c*100:.0f}%", (i, c * 100), textcoords="offset points",
+                     xytext=(0, 5), ha="center", fontsize=8.5)
+    ax1.set_ylabel("Cumulative efficiency (%)")
+    ax1.set_ylim(0, 105)
+    ax1.set_title("(a) Getting the energy down: ~60% end-to-end")
+
+    # (b) launches/day vs scale.
+    ax2.plot(scale_df["target_tw"], scale_df["launches_per_day"], "o-",
+             color=_PURPLE, lw=2)
+    ax2.axhline(1, color=_GREEN, ls="--", lw=1.2, label="~today's whole-world cadence (~1/day)")
+    ax2.axhline(10, color=_ORANGE, ls="--", lw=1.2, label="mature Starship (~10/day, heroic)")
+    ax2.axvspan(0, 1, color=_GREEN, alpha=0.08)
+    ax2.annotate("credible premium\nslice", (0.45, 60), fontsize=8, color=_GREEN, ha="center")
+    ax2.annotate("'power the world'\n(20 TW): ~240/day", (10, 150), fontsize=8,
+                 color=_RED, ha="center")
+    ax2.set_xlabel("SBSP capacity built (TW)")
+    ax2.set_ylabel("Launches per day, sustained 30 yr")
+    ax2.set_yscale("log")
+    ax2.set_title("(b) Scalability: a slice, not the whole pie")
+    ax2.legend(fontsize=8, loc="lower right")
+
+    fig.suptitle("Space solar, seriously: clean to launch, hard to scale to the whole world",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig29_spacedeep.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path

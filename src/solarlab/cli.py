@@ -142,6 +142,14 @@ def _cmd_renewable(args) -> int:
     return 0
 
 
+def _cmd_spacedeep(args) -> int:
+    from .report_spacedeep import generate_spacedeep
+
+    path = generate_spacedeep(Path(args.outdir))
+    print(f"Wrote {path} and space deep-dive figure in {args.outdir}/figures/")
+    return 0
+
+
 def _cmd_all(args) -> int:
     from .report import generate
     from .report_circ import generate_circularity
@@ -155,6 +163,7 @@ def _cmd_all(args) -> int:
     from .report_pyrite import generate_pyrite
     from .report_renewable import generate_renewable
     from .report_space import generate_space
+    from .report_spacedeep import generate_spacedeep
     from .report_value import generate_value
 
     generate(Path(args.outdir))
@@ -170,6 +179,7 @@ def _cmd_all(args) -> int:
     generate_future(Path(args.outdir))
     generate_metal(Path(args.outdir))
     generate_renewable(Path(args.outdir))
+    generate_spacedeep(Path(args.outdir))
     print(f"Wrote all reports and figures in {args.outdir}/")
     return 0
 
@@ -232,6 +242,7 @@ def main(argv=None) -> int:
     sub.add_parser("future", help="Wright's-law trajectory + capstone manifesto (Part XI)")
     sub.add_parser("metal", help="copper vs silver metallisation (Part XII)")
     sub.add_parser("renewable", help="can solar be truly renewable? (Part XIII)")
+    sub.add_parser("spacedeep", help="space solar: climate, beam, scale (Part XV)")
     sub.add_parser("all", help="generate every report and all figures")
     sub.add_parser("figures", help="generate Part I figures only")
     sub.add_parser("validate", help="run quick physics + data checks")
@@ -243,7 +254,8 @@ def main(argv=None) -> int:
             "optimize": _cmd_optimize, "pyrite": _cmd_pyrite, "value": _cmd_value,
             "firming": _cmd_firming, "power2x": _cmd_power2x, "space": _cmd_space,
             "future": _cmd_future, "metal": _cmd_metal, "renewable": _cmd_renewable,
-            "all": _cmd_all, "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
+            "spacedeep": _cmd_spacedeep, "all": _cmd_all, "figures": _cmd_figures,
+            "validate": _cmd_validate}[command](args)
 
 
 if __name__ == "__main__":  # pragma: no cover
