@@ -986,3 +986,50 @@ def fig25_trajectory(hist_fit, proj_df, fit, milestones, outdir: str | Path) -> 
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part XII: the copper question (metallisation)
+# ---------------------------------------------------------------------------
+
+def fig26_metallization(comp_df, sweep_df, breakeven, outdir: str | Path) -> Path:
+    """(a) LCOE of silver vs copper metallisation; (b) the razor-thin margin."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+
+    colors = [_GREY, _GREEN, _RED]
+    bars = ax1.bar(range(len(comp_df)), comp_df["lcoe_usd_mwh"], color=colors,
+                   alpha=0.85)
+    ax1.set_xticks(range(len(comp_df)))
+    ax1.set_xticklabels([n.replace(" (", "\n(") for n in comp_df["name"]], fontsize=8)
+    ax1.set_ylabel("LCOE ($/MWh)")
+    ax1.set_ylim(0, comp_df["lcoe_usd_mwh"].max() * 1.15)
+    for b, v in zip(bars, comp_df["lcoe_usd_mwh"]):
+        ax1.annotate(f"${v:.1f}", (b.get_x() + b.get_width() / 2, v),
+                     textcoords="offset points", xytext=(0, 3), ha="center",
+                     fontsize=9, fontweight="bold")
+    ax1.set_title("(a) On LCOE, copper barely wins — and only if reliable")
+
+    ax2.plot(sweep_df["copper_degradation"] * 100, sweep_df["copper_lcoe"], "-",
+             color=_GREEN, lw=2.2, label="Copper LCOE")
+    ax2.axhline(sweep_df["silver_lcoe"].iloc[0], color=_GREY, ls="--", lw=1.5,
+                label="Proven silver LCOE")
+    be = breakeven["breakeven_copper_degradation"] * 100
+    ax2.axvline(be, color=_RED, ls=":", lw=1.4)
+    ax2.annotate(f"break-even\n{be:.2f}%/yr", (be, sweep_df["silver_lcoe"].iloc[0]),
+                 textcoords="offset points", xytext=(6, 20), fontsize=8, color=_RED)
+    ax2.axvline(0.5, color=_BLUE, ls=":", lw=1, alpha=0.6)
+    ax2.annotate("silver's\n0.5%/yr", (0.5, sweep_df["copper_lcoe"].max()),
+                 textcoords="offset points", xytext=(4, -6), fontsize=7.5, color=_BLUE)
+    ax2.set_xlabel("Copper degradation rate (%/yr)")
+    ax2.set_ylabel("LCOE ($/MWh)")
+    ax2.set_title("(b) A 0.05%/yr reliability slip erases the saving")
+    ax2.legend(fontsize=8.5, loc="upper left")
+
+    fig.suptitle("Copper vs silver: the real case for copper is abundance, not LCOE",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig26_metallization.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
