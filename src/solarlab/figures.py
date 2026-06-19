@@ -1162,3 +1162,52 @@ def fig29_spacedeep(beam_df, scale_df, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part XVI: the collection problem
+# ---------------------------------------------------------------------------
+
+def fig30_collection(runway_df, thrift_df, regional, econ, outdir: str | Path) -> Path:
+    """(a) runway vs collection rate; (b) recycling margin vs silver content."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+
+    c = runway_df["collection"] * 100
+    ax1.plot(c, runway_df["runway_years"], "o-", color=_BLUE, lw=2.2)
+    ax1.fill_between(c, runway_df["runway_years"], color=_BLUE, alpha=0.12)
+    ax1.axvspan(0, 50, color=_RED, alpha=0.07)
+    ax1.annotate("below ~50% collection:\nbarely better than\nno recycling",
+                 (12, runway_df["runway_years"].max() * 0.62), fontsize=8, color=_RED)
+    for label, rate in regional.items():
+        ax1.axvline(rate * 100, color=_GREY, ls=":", lw=1)
+        ax1.annotate(label, (rate * 100, runway_df["runway_years"].max() * 0.95),
+                     rotation=90, fontsize=7, va="top", ha="right", color=_GREY)
+    ax1.set_xlabel("End-of-life collection rate (%)")
+    ax1.set_ylabel("Material runway (years)")
+    ax1.set_title("(a) Collection — not the recycler — is the swing factor")
+
+    ag = thrift_df["silver_mg_per_w"]
+    x = range(len(ag))
+    ax2.bar(x, thrift_df["recovered_value_t"], color=_GREEN, alpha=0.6,
+            label="Recovered material value")
+    ax2.bar(x, thrift_df["net_value_t"], color=_GREEN, alpha=0.95,
+            label="Net of recycling cost")
+    ax2.axhline(econ["recycle_cost"], color=_ORANGE, ls="--", lw=1.3,
+                label=f"Recycling cost (${econ['recycle_cost']:.0f}/t)")
+    ax2.axhline(econ["landfill_cost"], color=_RED, ls=":", lw=1.3,
+                label=f"Landfill (${econ['landfill_cost']:.0f}/t) — the cheap exit")
+    ax2.set_xticks(list(x))
+    ax2.set_xticklabels([f"{a:.0f} mg/W\nsilver" if a > 0 else "copper\n(0 silver)"
+                         for a in ag], fontsize=8)
+    ax2.set_ylabel("Value ($ per tonne of modules)")
+    ax2.set_title("(b) Thrifting silver to copper fades the recycling incentive")
+    ax2.legend(fontsize=7.5, loc="upper right")
+
+    fig.suptitle("The urban mine only pays off if we actually dig it up",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig30_collection.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
