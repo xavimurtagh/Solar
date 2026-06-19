@@ -1033,3 +1033,47 @@ def fig26_metallization(comp_df, sweep_df, breakeven, outdir: str | Path) -> Pat
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part XIII: truly renewable (closed-loop materials)
+# ---------------------------------------------------------------------------
+
+def fig27_renewable(runway_df, outdir: str | Path) -> Path:
+    """(a) material runway by scenario; (b) virgin demand vs world production."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+    df = runway_df.copy()
+    cap = 1e5
+    disp = df["runway_years"].clip(upper=cap)
+    colors = [_RED, _ORANGE, _BLUE, _GREEN]
+
+    bars = ax1.barh(df["scenario"], disp, color=colors, alpha=0.85)
+    ax1.set_xscale("log")
+    for b, (_, r) in zip(bars, df.iterrows()):
+        lab = "effectively infinite" if r["runway_years"] >= cap else f"{r['runway_years']:.0f} yr"
+        ax1.annotate(lab, (min(r["runway_years"], cap), b.get_y() + b.get_height() / 2),
+                     textcoords="offset points", xytext=(5, 0), va="center", fontsize=8.5)
+    ax1.set_xlabel("Material runway (years of reserves, log scale)")
+    ax1.set_title("(a) How long until we run out?")
+    ax1.margins(x=0.3)
+
+    share = df["virgin_share_of_production"] * 100
+    cbar = ax2.barh(df["scenario"], share.clip(upper=120), color=colors, alpha=0.85)
+    ax2.axvline(100, color="k", ls="--", lw=1.3)
+    ax2.annotate("100% of world\nproduction", (100, -0.4), fontsize=7.5, ha="center")
+    ax2.axvspan(0, 30, color=_GREEN, alpha=0.08)
+    ax2.annotate("sustainable\nzone", (15, 3.2), fontsize=7.5, color=_GREEN, ha="center")
+    for b, v in zip(cbar, share):
+        ax2.annotate(f"{v:.1f}%", (min(v, 120), b.get_y() + b.get_height() / 2),
+                     textcoords="offset points", xytext=(4, 0), va="center", fontsize=8.5)
+    ax2.set_xlabel("Annual virgin metal demand (% of world production)")
+    ax2.set_title("(b) Are we mining within our means?")
+
+    fig.suptitle("Truly renewable solar = a tight recycling loop + abundant metals",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig27_renewable.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
