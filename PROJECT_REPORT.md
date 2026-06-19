@@ -14,12 +14,13 @@ electricity, and at first that sounds like a problem to fix. It mostly isn't. Th
 deeper I dug, the more the story changed under my feet: the panel is nearly as good
 as physics allows, solar electricity is already the **cheapest humanity has ever
 made**, and the real obstacles moved somewhere I didn't expect — to *materials*, to
-*timing*, and ultimately to *what we do with the energy*. The single biggest
-discovery is this: **solar's problem is no longer that it's expensive. It's that
-it's cheapest at noon, when we need it least.** Fixing *that* — by storing it, by
-building industries that run when the sun shines, or even by collecting it in space
-— is what will actually change the world. This document is the journey to that
-conclusion.
+*timing*, to *what we do with the energy*, and (the least glamorous of all) to
+*whether anyone bothers to collect the old panels*. The single biggest discovery is
+this: **solar's problem is no longer that it's expensive. It's that it's cheapest at
+noon, when we need it least.** Fixing *that* — by storing it, by building industries
+that run when the sun shines, or even by collecting it in space — is what will
+actually change the world. This document is the journey to that conclusion, and the
+hard, honest questions I had to face along the way.
 
 ---
 
@@ -35,337 +36,307 @@ Two words I'll use throughout:
 - **Efficiency** — the fraction of the sunlight's energy a panel converts to
   electricity. Today's typical panel is about **20%** efficient.
 - **Kilowatt-hour (kWh)** — the standard unit of energy, the thing you're billed
-  for. One kWh runs a microwave for about an hour, or a laptop for a couple of
-  days. A typical home uses ~30 kWh a day. When I talk about the *cost* of energy,
-  I'll use cents per kWh — the number on your electricity bill (a US home pays
-  roughly 16¢/kWh).
+  for. One kWh runs a microwave for about an hour. A typical home uses ~30 kWh a
+  day. When I talk about the *cost* of energy I'll use cents per kWh — the number on
+  your bill (a US home pays roughly 16¢/kWh).
 
 The question that started everything was simple: **if a panel only captures 20% of
 the sunlight, where does the other 80% go — and can we get it back?**
 
 ---
 
-## Discovery 1: The panel is already close to a hard physical wall
+## Part one: making solar better (and discovering the limits)
 
-It turns out most of that "lost" 80% isn't waste we can engineer away. It's
-physics.
+### Discovery 1 — The panel is already close to a hard physical wall
 
-Sunlight is a mix of colors, each carrying a different amount of energy. A silicon
-solar cell can only neatly use one "size" of energy packet:
+Most of that "lost" 80% isn't waste we can engineer away. It's physics. Sunlight is
+a mix of colors; a silicon cell can only neatly use one "size" of energy packet.
+Packets too weak (infrared) pass straight through — ~19% gone. Packets too strong
+(blue light) get absorbed, but the panel keeps only a fixed slice and the rest turns
+to **heat** — ~33% gone. Do the math and the best *any* simple silicon cell could
+ever reach is about **33%** (a 1961 result called the Shockley-Queisser limit, which
+the code re-derives from scratch). The gap between today's ~20% and that ~33% ceiling
+is *small*, and mostly hard physics. **The panel is a solved problem.** (One way
+beats the ceiling: stack two cells to catch different colors — a "tandem" — which
+already hits 35% in the lab. Hold that thought.)
 
-- **Packets that are too weak** (redder light, and infrared we can't see) pass
-  straight through the panel and do nothing — that's about **19%** of the energy
-  gone.
-- **Packets that are too strong** (bluer light) *do* get absorbed, but the panel
-  can only keep a fixed amount from each one; the excess instantly turns into
-  **heat** — about another **33%** gone.
+### Discovery 2 — It was never really about efficiency; it's about cost
 
-These two losses pull in opposite directions (fix one, worsen the other), and when
-you do the math, the best *any* simple silicon cell could ever achieve is about
-**33%**. This isn't an engineering guess — it's a 1961 physics result called the
-*Shockley-Queisser limit*, and the code in this project re-derives it from scratch
-and lands on the same number.
+If the panel is nearly maxed out, what matters is **money per unit of energy**. I
+computed it: a big utility solar farm makes power for about **5.6¢/kWh** — cheaper
+than coal or gas, the cheapest electricity ever. The *same panels on a house* cost
+about **17.6¢/kWh** — three times more — because on a rooftop the panel is a small
+part of the bill; most of it is "soft costs" (permits, paperwork, sales, an
+electrician's afternoon). **Cheaper home solar needs less bureaucracy, not a better
+cell.**
 
-So the honest "waterfall" from sunlight to the electricity in your wall looks like
-this:
+### Discovery 3 — The real ceiling is the periodic table
 
-| Stage | Efficiency | What's lost getting to the next step |
-|---|---|---|
-| Perfect physics limit (silicon) | **33%** | the unavoidable color mismatch above |
-| Best a real silicon cell can do | 29% | tiny material imperfections |
-| Best cell ever made in a lab | 28% | manufacturing reality |
-| A panel you can actually buy | ~21% | wiring the cells into a glass panel |
-| A whole rooftop system, over a year | **~17%** | heat, dust, shading, the inverter, cabling |
+To stop climate change we'd need to build solar at ~2 terawatts a year (a terawatt
+is a trillion watts). Can we get the *materials*? Every panel needs a little
+**silver**, which is rare. Divide world silver production by what each panel needs
+and today's panels can only support about **1 terawatt a year** of building — even
+taking half the world's silver. Technologies using **tellurium** (rarer than gold)
+cap out near 0.006; **indium**, near 0.055. The fix is almost mundane: replace silver
+with **copper** (~1/100th the price, ~900× more abundant), which lifts the ceiling
+roughly **30-fold**. **A boring material swap matters more than any efficiency
+record.** (We'll come back to whether copper is really as good — it's not quite the
+free lunch it sounds.)
 
-**The takeaway that reframed the whole project:** the gap between 20% and the ~33%
-ceiling is *small*, and most of it is hard physics, not laziness. We are not
-leaving most of the energy on the table. The panel is a solved problem.
+### Discovery 4 — Every old panel is a future mine
 
-There *is* one way to beat the ceiling: stack two different cells on top of each
-other so they catch different colors — a "tandem." That pushes the limit up toward
-~45%, and real tandem cells have already hit **35%** in the lab. Hold that thought;
-it comes back.
+Panels last ~30 years, then retire. The global fleet becomes an enormous **"urban
+mine"** — hundreds of millions of tonnes of recoverable material. The twist:
+recycling *lags* growth (today's retirements were tiny installs from 30 years ago),
+so it only covers a small slice while solar is still booming; it dominates only once
+growth levels off (around the 2050s). And a catch: cheap shredding recovers the glass
+and aluminum but **throws the silver and silicon away** — only careful "high-value"
+recycling recovers what matters. (This turns out to hide an even bigger problem — see
+Part four.)
 
----
+### Discovery 5 — Use land twice, and mind the timing
 
-## Discovery 2: It was never really about efficiency — it's about cost
+A solar *farm* is mostly the gaps between rows, so what matters is energy per *acre*
+— and land can do two jobs. **Agrivoltaics** (raised panels with crops underneath)
+out-produces doing either alone. **Vertical panels facing east-west** make a bit less
+energy but peak in the *morning and evening* instead of noon — which, it turns out,
+is exactly the right instinct. **Floating solar** uses no land and runs cooler.
 
-If the panel is nearly maxed out, what actually matters? **Money per unit of
-energy.** The industry measures this as the *levelized cost of energy* (LCOE) —
-basically, add up everything a solar farm costs over its 25-30 year life, divide by
-all the electricity it makes, and you get a price per kWh.
+### Discovery 6 — There is no "best" solar panel
 
-When I computed it, the result was striking:
+A tool I built to pick the optimal technology taught me the obvious-in-hindsight
+truth: the best panel depends on what's scarce *for you*. Small roof? The most
+*efficient* panel wins. Plenty of land, fixed budget? The *cheapest* panel wins. The
+optimal choice literally flips. Anyone selling "the best solar panel" is skipping the
+only question that matters: best *for what*?
 
-- A big **utility-scale** solar farm: about **5.6¢/kWh** — cheaper than coal or
-  gas, the cheapest electricity ever generated at scale.
-- The **same panels on a house**: about **17.6¢/kWh** — three times more.
+### Discovery 7 — Fool's gold might be the future (and we mapped how)
 
-Same panel. Triple the cost. Why? Because for a rooftop system the panel is a small
-part of the bill — most of it is "soft costs": permits, paperwork, sales,
-scaffolding, an electrician's afternoon. **If you want cheaper home solar, you
-don't need a better cell. You need less bureaucracy.** That was the first hint that
-the interesting problems had moved *off* the panel.
-
----
-
-## Discovery 3: The real ceiling isn't efficiency or cost — it's the periodic table
-
-Here's where it got genuinely surprising. To stop climate change, the world needs
-to build solar at a colossal rate — very roughly **2 terawatts per year** (a
-terawatt is a trillion watts; the whole world installed about half a terawatt in a
-recent record year). Can we even get the *materials*?
-
-Every panel needs a little of certain elements. The most important is **silver**
-(used for the fine lines that carry current off each cell). Silver is rare. When I
-divided the world's annual silver production by how much each panel needs, today's
-silicon panels can only support about **1 terawatt per year** of building — even if
-solar took *half* of all the silver mined on Earth. Other promising technologies
-are worse: the ones using **tellurium** (rarer than gold) cap out around 0.006
-TW/year; ones using **indium** around 0.055.
-
-So the binding constraint on saving the climate with solar isn't efficiency, and
-often isn't even money — it's **grams of a scarce element per panel**.
-
-The good news: there's a fix, and it's almost mundane. Replace the silver with
-**copper** (about 1/100th the price, and we mine ~900× more of it). That single
-swap lifts the ceiling roughly **30-fold** *and* makes panels cheaper. It's already
-being commercialized. **A boring material substitution matters more for the climate
-than any efficiency record.** That reframed "innovation" for me entirely.
-
----
-
-## Discovery 4: Every old panel is a future mine
-
-If scarce materials are the wall, recycling is a way through it — but with a twist I
-didn't anticipate. A solar panel lasts ~30 years, then retires. The global fleet
-installed today becomes an enormous **"urban mine"** of silver, silicon, and copper
-in the 2040s and 2050s — on the order of **200 million tonnes** of recoverable
-material.
-
-The twist: **recycling can't rescue the growth phase.** Because the panels retiring
-today were installed 30 years ago, when we built very little, recycled material only
-covers a small slice of what we need while solar is still growing explosively. It's
-only once growth *levels off* (my model puts the crossover around **2058**) that the
-retired fleet can supply most of the demand and the material ceiling melts away.
-
-And there's a catch worth shouting about: the cheap, common way to recycle a panel
-shreds it and recovers the glass and aluminum frame — but **throws the silver and
-silicon away**. Only the more careful (and currently rarer) "high-value" recycling
-recovers the elements that actually matter. **We have to build the right kind of
-recycling *before* the wave of old panels arrives**, or we'll bury the very
-materials we're short of.
-
----
-
-## Discovery 5: Stop thinking about panels, start thinking about land — and time
-
-A solar *farm* is mostly the empty space between rows of panels. So the real
-question for big installations isn't energy per panel, it's **energy per acre** —
-and land can often do two jobs at once:
-
-- **Agrivoltaics** — raise the panels and grow crops or graze sheep underneath. You
-  lose a little electricity but keep most of the farming, and the shared land
-  out-produces doing either alone by ~50%.
-- **Vertical panels facing east-west** — stand them on edge like fences. They make
-  a bit less total energy, but here's the clever part: instead of all peaking at
-  noon, they peak in the **morning and evening** — exactly when people get up and
-  come home, and when solar is otherwise scarce. (This quietly previews the big
-  insight coming next.)
-- **Floating solar** — put it on reservoirs. No land at all, and the water cools
-  the panels enough to boost output a few percent.
-
-The lesson: "using solar well" is partly about *space*, and partly — it turns out —
-about *timing*.
-
----
-
-## Discovery 6: There is no "best" solar panel
-
-I built a little tool that picks the optimal technology given your constraints, and
-it taught me something I now think is obvious in hindsight: **the best panel depends
-entirely on what's scarce for you.**
-
-- If you have a **small roof** (space is the limit), the most *efficient* panel
-  wins, even though it costs more — because every square meter has to count.
-- If you have **plenty of land but a fixed budget**, the *cheapest* panel wins —
-  because your dollars buy the most total capacity.
-
-The optimal choice literally flips depending on which wall you hit first. Anyone
-selling you "the best solar panel" is skipping the only question that matters: best
-*for what*?
-
----
-
-## Discovery 7: Fool's gold might be the future
-
-A fun tangent that turned serious. **Iron pyrite** — "fool's gold," literally just
-iron and sulfur, two of the most common and cheapest elements on Earth — is a
-fantastic sunlight absorber with an ideal color match. By the physics, it *should*
-make a ~31%-efficient cell. In reality it makes a hopeless ~3% one.
-
-I modeled why, and it comes down to a single failure: pyrite can't hold **voltage**.
-Tiny defects at its surface drain away the electrical "pressure" before you can use
-it. Cure that one problem — and it's a materials-science challenge, not a physics
-impossibility — and pyrite could reach **22-25%**: a perfectly good panel made from
-dirt-common ingredients with no scarcity ceiling at all. It's a long shot worth
-taking, because the payoff is a panel the whole planet could build without limit.
+**Iron pyrite** — "fool's gold," just iron and sulfur, dirt-common — *should* make a
+~31%-efficient cell but in reality makes a hopeless ~3% one. The problem is a single
+failure: it can't hold **voltage** (electrical "pressure" leaks away at its flawed
+surface). So I built a repair roadmap — and the model says exactly how far each fix
+gets you: clean up the surface (→11%), fix flaws inside the crystal (→17%), then the
+decisive move borrowed from other modern cells — wrap it in dedicated collecting
+layers so it stops relying on its own broken surface (→**25%**). Have researchers
+tried? Yes, for decades; pyrite is stubborn. What the model adds isn't a cure — it's
+a precise *target* for each attempt, which is the first thing a serious effort needs.
 
 ---
 
 ## The turning point: cheap is not the same as valuable
 
-Everything so far was about making solar better, cheaper, more abundant. Then I hit
-the discovery that reorganized the entire project — and it's the one most people
-(including me, at first) miss.
+Everything above was about making solar better. Then I hit the discovery that
+reorganized the whole project. Solar all generates at once — sunny midday — so the
+more you add, the more it floods the market exactly when it's worth least. I modeled
+an electricity market and watched it happen: at a small share, each unit of solar is
+worth *more* than average; but by ~30% of the grid its worth falls to about **half**,
+and by ~45% to about a **quarter**, with **a fifth of all the solar thrown away**
+because nothing can use it at noon. This isn't a forecast — Germany's solar value
+already fell from 73% to 48% of average in three years, and 2026 is on track to be
+the **first year the world installs *less* solar than the year before.** Not because
+it got expensive — because we're hitting this wall.
 
-Solar all generates at the same time: the middle of a sunny day. The more solar you
-add, the more it floods the market at noon, and the less each kilowatt-hour is
-worth *at that moment*. I modeled an electricity market and watched it happen: when
-solar supplies a small share of the grid, each unit is worth *more* than average
-(it shows up during busy daylight). But:
+The picture: solar carves a deep dip into midday prices while the evening peak (after
+sunset, when everyone's home) stays sky-high and out of solar's reach. Cheap
+electrons, arriving at the wrong time. This is the real frontier, and it has exactly
+three answers.
 
-- By the time solar provides ~30% of the grid, its average worth has fallen to
-  about **half** of average.
-- By ~45%, it's down to about a **quarter**, and roughly **a fifth of all the solar
-  energy gets thrown away** ("curtailed") because nothing can use it at noon.
+### Answer 1 — Store it
 
-This isn't a prediction — it's already happening. In Germany, the value of solar
-power dropped from 73% of the average price to 48% in just three years. And 2026 is
-on track to be the **first year ever that the world installs *less* solar than the
-year before** — not because it got expensive, but because we're hitting this wall.
+Put the midday flood in batteries, release it after dark. I simulated this hour by
+hour: **round-the-clock solar-plus-battery already costs about 7¢/kWh** at a sunny
+site — cheaper than a *new* gas or coal plant. But there's a cliff: going from
+"reliable 90% of the time" to "99%" roughly *doubles* the cost, because covering rare
+cloudy weeks needs a huge, mostly-idle pile of batteries. **Chasing 100% solar-only
+is the most expensive energy you can buy.** Store the easy 80-90%; handle the rest
+another way.
 
-**The picture in one image:** solar carves a deep dip into midday electricity prices
-while the evening peak — after the sun sets, when everyone's home — stays sky-high
-and completely out of solar's reach. Cheap electrons, arriving at the wrong time.
+### Answer 2 — Use it: make molecules, not just electrons
 
-This is the real frontier. And it has exactly three answers.
+This is the most exciting idea in the project. For 150 years, power plants followed
+our demand (flip a switch, burn more fuel). Solar can't — its timing is fixed by the
+sky. So **flip the logic: build industries that run when the sun shines.** When
+midday power is nearly free, you stop storing electrons and start *making things* —
+and here's exactly how that works, step by step.
+
+The pivot is **splitting water**: run a solar current through water and it tears into
+hydrogen and oxygen. That hydrogen is the master key, and almost everything else is
+built from it:
+
+- **Fertilizer:** combine the hydrogen with nitrogen pulled from the air → ammonia,
+  which already grows about half the world's food (today made from fossil gas).
+- **Steel:** today we strip oxygen from iron ore with coal, which dumps CO₂. Use
+  hydrogen instead and the *exhaust becomes water*. Same steel, no carbon.
+- **Fuels for planes and ships:** capture CO₂ from the air, react it with the
+  hydrogen → jet fuel, diesel, methanol, built molecule by molecule.
+- **Fresh water:** electric pumps push seawater through a fine membrane that blocks
+  the salt — a few kWh buys a tonne of drinking water.
+- **Carbon removal & heat:** fans and chemistry pull CO₂ from the air; cheap power
+  charges "thermal batteries" (heated firebricks) that warm factories all night.
+
+The pattern: every one is a **flexible** load, happy to run hard at noon and rest at
+night — designed *around* solar's rhythm. And it solves two problems at once: the
+"too much solar at noon" problem and the "where do we get clean fuel" problem are the
+*same* problem, and they cancel out. **Solar stops being a way to light bulbs and
+becomes the feedstock for the physical economy whenever the sun is up.**
+
+### Answer 3 — Escape the night: solar in space
+
+The radical answer: if the problem is that the sun sets, go where it never does. A
+solar satellite gets sunlight ~95% of the time and beams the power down by radio
+waves. I dug into the hard questions:
+
+- **Does launching it wreck the climate?** No — the rocket emissions pay back in
+  about **3 months**, and over its life it's *cleaner per kWh than a rooftop panel*
+  (because it runs almost constantly). The real worry is rocket soot high in the
+  atmosphere if we launch a lot, which nobody has fully measured.
+- **How does the energy get down?** Through a chain (electricity → microwaves →
+  through the air → a ground antenna → electricity) that delivers about **60%** of
+  what's collected. The beam is deliberately weak and spread out — a mesh you could
+  farm under, not a death ray.
+- **What about dead satellites, meteors, repairs?** Dead ones get pushed to a
+  "graveyard" orbit — and can't really be recycled, which is a genuine downside.
+  Meteor strikes cost a sliver of a modular array, not the whole thing. Repairs would
+  be robotic.
+- **Could it power the whole world?** No. The catch is *weight*: powering the entire
+  world this way would need ~**240 rocket launches a day for 30 years** — absurd. Its
+  honest role is the **premium slice** terrestrial solar is worst at: firm, 24/7
+  power for high-latitude cities or remote industry. A complement, not a replacement.
 
 ---
 
-## Answer 1: Store it (firming)
+## Part four: the honest second look — does any of this really hold up?
 
-The obvious fix: put the cheap midday flood into batteries and release it after
-dark, turning solar into "always-on" power. I simulated this hour by hour for a full
-year. The result: **round-the-clock solar-plus-battery already costs about 7¢/kWh**
-at a sunny site — cheaper than a *new* gas or coal plant. Dispatchable solar isn't a
-future promise; it beats burning things today.
+After all that, I went back and stress-tested the project's own cheerful claims. This
+is where it got uncomfortable, and more interesting.
 
-But there's a cliff. Getting from "reliable 90% of the time" to "reliable 99% of the
-time" roughly *doubles* the cost, because covering the occasional week of clouds
-needs a huge, mostly-idle pile of batteries. **Chasing 100% solar-only is the most
-expensive energy you can buy.** The smart move is to store the easy 80-90% and
-handle the rest another way.
+### Is copper really a free swap for silver?
 
----
+I'd called copper-for-silver a near-free win. Modeling it properly (not just price,
+but performance and lifespan): on **efficiency**, copper is fine — even slightly
+*better* (it makes finer lines that shade the cell less). On **lifespan**, there's a
+real question: copper can poison silicon if it seeps in (so it needs a thin barrier
+layer) and it corrodes more than silver, and we only have a few years of field data
+versus silver's thirty. And on **cost**, the surprise: at the whole-system level
+copper *barely* beats silver, and a tiny reliability slip erases the saving — because
+silver is only ~1% of a system's cost. **So copper's real value was never cheaper
+energy. It's that you simply can't build tens of terawatts on silver, at any price.**
+The case for copper is abundance, not the bill. (We were right to push copper, wrong
+about why.)
 
-## Answer 2: Use it — make molecules, not just electrons (the inversion)
+### Can solar ever be *truly* renewable, or will we run out?
 
-This is, to me, the most exciting idea in the whole project, and the biggest change
-in how we might *use* solar.
+This was the question that worried me most, and the answer is reassuring with a real
+catch. First, the good news: **metals don't wear out.** Unlike a plastic bottle
+(which downcycles) the silver and copper in an old panel refine back to *original
+purity* and work again in a brand-new panel — the same atom, ready for another 30
+years. The only loss is what we fail to recover.
 
-For 150 years, power plants followed our demand — we flipped a switch, they burned
-more fuel. Solar can't do that; its timing is fixed by the sky. So instead of
-forcing solar to behave like a power plant, **flip the logic: build industries that
-run when the sun shines and rest when it doesn't.**
+But do we run out? I modeled a mature world running on 50 terawatts of solar:
 
-When midday electricity is nearly free, you stop trying to store those electrons and
-start using them to *make things*:
+- **Silver, no recycling:** it would eat 87% of all silver mined each year and
+  **exhaust known reserves in about 30 years.** Called that way, it is *not*
+  renewable — it's a resource cliff.
+- **Silver, recycled well:** fresh demand drops to ~13% of production and the runway
+  stretches to ~**190 years.**
+- **Copper:** an effectively *infinite* runway.
 
-- **Hydrogen**, by splitting water — a clean fuel and the raw material for much of
-  heavy industry. Cheap solar already makes it for a competitive price.
-- **Ammonia** (fertilizer), **synthetic fuels**, and **green steel** — a tenth of
-  the world's carbon emissions, made from sunlight instead of fossils.
-- **Fresh water**, by desalinating seawater for a few cents a tonne.
-- **Carbon removal**, sucking CO₂ out of the air at the cost of cheap power.
+So solar *can* be truly renewable — but it's a **choice**, resting on two things:
+**recycle tightly, and move to abundant metals.** Scarce silver is a bootstrap, not
+a destiny.
 
-The beautiful part: these flexible factories can *eat the glut*. In my model, adding
-flexible hydrogen production cut solar's wasted energy from a third down to a tenth
-— and turned that waste into fuel. **The "too much solar at noon" problem and the
-"where do we get clean hydrogen" problem are the same problem, and they cancel each
-other out.** Solar stops being a way to light bulbs and becomes the feedstock for
-the physical economy, whenever the sun is up.
+### The least glamorous discovery — and maybe the most important
 
----
+There's a hidden assumption buried in "recycle tightly": that the old panels actually
+get *collected*. They mostly don't. Around the world, only ~10-20% of retired panels
+formally reach a recycler; the rest are landfilled, exported, or abandoned. And when
+I made collection the variable it really is, the whole recycling story hinged on it:
 
-## Answer 3: Escape the night entirely (solar in space)
+- **Below ~50% collection — where most of the world sits — recycling barely helps**;
+  the multi-century runway collapses back toward the 30-year cliff. The world's best
+  recycling technology is worthless on a pile of panels nobody picked up.
+- The reason collection is low is brutally simple economics: a tonne of old panels
+  holds about **$536** of recoverable material, but the person holding it just sees a
+  choice between *paying* ~$280 to recycle or ~$75 to dump it. **Landfill is cheaper,
+  so without a rule, the panel gets dumped.**
+- A cruel twist: the silver is what makes a panel *worth* recycling. As we thrift
+  silver away and switch to copper (the very fix for the supply ceiling), the
+  recovery value drops by two-thirds — so the copper era will need *more* collection
+  policy, not less.
 
-The most radical answer: if the problem is that the sun sets, go where it never
-does. A solar satellite in orbit gets sunlight ~95% of the time, with no atmosphere
-or clouds dimming it, and beams the power down to Earth by radio waves.
-
-It sounds like science fiction, and at today's rocket prices it is — wildly
-uneconomic. But I found the cost is dominated by *one* thing: the price of launching
-weight to orbit. And that price is falling fast. At the launch costs the next
-generation of rockets is targeting (~$100 per kilogram), space-based solar pencils
-out to roughly **3.5-10¢/kWh** — competitive with firm solar on the ground.
-**Space solar isn't a physics problem; it's a launch-cost bet**, and the bet is
-already in motion.
+The fix isn't a technology. It's **rules and logistics** — make the manufacturer
+responsible for the old panel (the EU already does this, and gets ~80% collection),
+add a refundable deposit, ban PV from landfills. We spent fifteen analyses on
+physics, cost, materials, and orbits. The thing most likely to decide whether solar
+is *truly* renewable is whether a **truck shows up to collect the old panels.**
 
 ---
 
 ## Where it's all going
 
-Underneath every chart in this project is one quiet engine: **Wright's law.** Every
-time the world *doubles* the total amount of solar ever built, the price drops by a
-roughly constant fraction. It's held for fifty years across a thousand-fold drop in
-price, and the data fits it almost perfectly.
-
-Run that forward and the panel itself heads toward *nearly free*. But — echoing
-Discovery 2 — the price of solar *energy* doesn't fall to zero with it. It flattens
-out around **2¢/kWh**, because once the panel costs nothing, what you're paying for
-is everything *around* it: the land, the wiring, the labor, the permits. **The
-frontier of cheap energy has permanently moved off the cell and onto the system.**
+Underneath every chart is one engine: **Wright's law** — each time the world doubles
+the total solar ever built, the price drops by a roughly constant fraction. It's held
+for fifty years. Run it forward and the panel heads toward *nearly free* — but the
+price of solar *energy* flattens out around **2¢/kWh**, because once the panel costs
+nothing, you're paying for everything *around* it (land, wiring, labor, permits). The
+frontier of cheap energy has permanently moved off the cell and onto the system.
 
 ---
 
-## The big takeaways (the whole project in nine lines)
+## The big takeaways
 
-1. **The panel is nearly maxed out.** ~20% in the field is close to the ~33% physics
-   ceiling; most of the "loss" is unavoidable.
-2. **Cost, not efficiency, is what matters** — and cost is set by *where* you install
-   solar (and by paperwork), far more than by *which* panel.
-3. **The hidden wall is materials.** Scarce metals like silver and tellurium cap how
-   fast we can build; swapping in abundant copper matters more than any efficiency
-   record.
-4. **Recycling eventually dissolves the materials wall** — but only after growth
-   slows, and only if we build the *right* (high-value) recycling first.
-5. **Use land twice** (crops, water, vertical fences) and you get more out of the
-   same ground — and better-timed power.
-6. **There is no single best panel** — only the best one for whatever's scarce for
-   you: space or money.
+1. **The panel is nearly maxed out** (~20% vs a ~33% physics ceiling); most "loss" is
+   unavoidable.
+2. **Cost, not efficiency, is what matters** — and it's set by *where* you install,
+   and by paperwork.
+3. **The hidden wall is materials**; swapping scarce silver for abundant copper
+   matters more than any efficiency record — though copper's real value is abundance,
+   not a cheaper bill, and its long-term reliability is still being proven.
+4. **Solar can be truly renewable — but only with a tight recycling loop *and*
+   abundant metals.** On scarce silver alone it's a 30-year cliff.
+5. **And recycling only works if the old panels get collected** — today they mostly
+   don't, and that mundane logistics problem may be the highest-leverage climate fix
+   in this whole report.
+6. **There's no single best panel** — only the best one for whatever's scarce for you.
 7. **The biggest discovery: cheap ≠ valuable.** Solar's electrons are worth least
-   exactly when there's most of them (midday), and that — not cost — is the wall the
+   exactly when there's most of them (midday) — and that, not cost, is the wall the
    world is hitting now.
-8. **The fix is to stop shaping solar to fit our demand, and start shaping our
-   demand to fit the sun** — store it, or better yet build flexible industries
-   (hydrogen, fuels, water, carbon removal) that feast on cheap midday power.
+8. **The fix is to shape our demand around the sun** — store it, or build flexible
+   industries (hydrogen, fuels, water, carbon removal) that feast on cheap midday
+   power.
 9. **Solar is already the cheapest energy ever made,** and getting cheaper. The work
-   ahead isn't a better panel. It's reorganizing what we build *around* it.
+   ahead isn't a better panel — it's reorganizing what we build *around* it.
+
+**And the thread that ties the whole second half together:** every hard question —
+copper vs silver, recycling, pyrite, demand, space — returned the same verdict.
+**Abundance, circularity, and flexibility beat scarcity, consumption, and rigidity.**
+A solar civilization works when it's built from common atoms, kept in a closed loop,
+and run on flexible demand — not when it mines rare metals, dumps them after one use,
+and waits for the sun to behave like coal.
 
 ---
 
 ## A personal note to close
 
-I came into this expecting to find a story about a clever new material that would
-make panels twice as good. That story doesn't exist, and chasing it would miss the
-point. What I found instead is more hopeful and more demanding at once: **the hard
-part of solar is no longer the technology — it's the imagination.** We already have
-electricity too cheap to meter for a few hours each sunny day. The question that
-will define the next few decades isn't "how do we make solar better?" It's "what
-kind of world do we build for a sun that pours out nearly-free energy on its own
-schedule, not ours?"
+I came into this expecting a story about a clever new material that would make panels
+twice as good. That story doesn't exist, and chasing it would miss the point. What I
+found instead is more hopeful and more demanding at once: **the hard part of solar is
+no longer the technology — it's the imagination, and the follow-through.** We already
+have electricity too cheap to meter for a few hours each sunny day. The questions that
+will define the next few decades aren't "how do we make solar better?" They're "what
+do we build to use a nearly-free sun?" and — humblingly — "will we bother to send a
+truck for the old panels?"
 
-A world that answers that — that learns to make its fuel, its water, its steel, and
-its computation in the hours the sun is shining — gets an abundance the age of coal
-and oil could never imagine. Not because we invented a magic panel. Because we
-finally learned to use the one we already have.
+A world that answers those gets an abundance the age of coal and oil could never
+imagine. Not because we invented a magic panel. Because we finally learned to use,
+reuse, and build around the one we already have.
 
 ---
 
-*Everything above is drawn from the eleven analyses in this repository, each of which
-computes its numbers from physics and economics rather than asserting them, and
-checks them against real-world 2026 data. For the technical versions, see the
+*Everything above is drawn from the sixteen analyses in this repository, each of which
+computes its numbers from physics and economics rather than asserting them, and checks
+them against real-world 2026 data. For the technical versions, see the
 `output/REPORT_*.md` files; for the deep synthesis, see
-[`output/REPORT_FUTURE.md`](output/REPORT_FUTURE.md). To reproduce all of it from
-scratch: `pip install -e ".[dev]" && python -m solarlab all`.*
+[`output/REPORT_FUTURE.md`](output/REPORT_FUTURE.md). To reproduce all of it:
+`pip install -e ".[dev]" && python -m solarlab all`.*

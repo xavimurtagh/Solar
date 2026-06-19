@@ -32,8 +32,9 @@ python -m solarlab metal        # Part XII:  copper vs silver       -> REPORT_ME
 python -m solarlab renewable    # Part XIII: truly renewable?       -> REPORT_RENEWABLE.md + fig 27
 python -m solarlab pyrite       # Part XIV:  pyrite voltage roadmap -> (+ fig 28 in REPORT_PYRITE.md)
 python -m solarlab spacedeep    # Part XV:   space solar, seriously -> REPORT_SPACEDEEP.md + fig 29
-python -m solarlab all          # every report, all 29 figures
-pytest                          # 177 tests pin the numbers to published values
+python -m solarlab collection   # Part XVI:  the collection problem  -> REPORT_COLLECTION.md + fig 30
+python -m solarlab all          # every report, all 30 figures
+pytest                          # 185 tests pin the numbers to published values
 
 # the optimiser is also an interactive tool:
 python -m solarlab optimize --area 40 --budget 80000 --deployment residential
@@ -208,6 +209,12 @@ Four analyses that pressure-test the project's own claims:
 - **Part XV — space solar, seriously.** Launch carbon pays back in ~3 months, but
   scaling to power the *whole* world needs ~240 rocket launches a day for 30 years.
   Verdict: a premium firm-power **slice**, not the bulk.
+- **Part XVI — the collection problem.** A closed loop is worthless if the panels
+  never come back. Below ~50% collection (most of the world is at ~10-20%) the
+  material runway collapses to the no-recycling cliff; landfill is cheaper than
+  recycling, and the copper transition thins the incentive further. The fix is
+  **policy and logistics** (producer responsibility, deposits, landfill bans) — the
+  least glamorous and possibly highest-leverage lever in the whole project.
 
 ## How it works
 
@@ -235,7 +242,8 @@ Four analyses that pressure-test the project's own claims:
 | `renewable.py` | closed-loop materials and the runway to "truly renewable" |
 | `pyrite.py` | the pyrite voltage-repair roadmap |
 | `spacedeep.py` | space-solar launch carbon, beaming chain, scalability |
-| `figures.py` / `report*.py` / `cli.py` | 29 figures, fourteen reports, entry point |
+| `collection.py` | end-of-life collection rate, recycling economics |
+| `figures.py` / `report*.py` / `cli.py` | 30 figures, fifteen reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction
