@@ -16,14 +16,16 @@ def pyr():
 
 def test_pyrite_figure_renders(pyr, tmp_path):
     paths = render_pyrite_figures(pyr, tmp_path)
-    assert len(paths) == 1 and paths[0].stat().st_size > 10_000
+    assert len(paths) == 2
+    for pth in paths:
+        assert pth.stat().st_size > 10_000
 
 
 def test_pyrite_report_builds_and_deterministic(pyr, tmp_path):
     render_pyrite_figures(pyr, tmp_path)
     report = build_pyrite_report(pyr, tmp_path)
     text = report.read_text()
-    assert "fig17_" in text
+    assert "fig17_" in text and "fig28_" in text
     assert "ERE" in text and "pyrite" in text.lower()
     assert build_pyrite_report(pyr, tmp_path).read_text() == text
 

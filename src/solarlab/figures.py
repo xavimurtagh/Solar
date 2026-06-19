@@ -1077,3 +1077,39 @@ def fig27_renewable(runway_df, outdir: str | Path) -> Path:
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part XIV: cracking pyrite (the voltage roadmap)
+# ---------------------------------------------------------------------------
+
+def fig28_pyrite_roadmap(roadmap_df, outdir: str | Path) -> Path:
+    """An ascending ladder: efficiency unlocked by each voltage-repair step."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    df = roadmap_df.reset_index(drop=True)
+    x = np.arange(len(df))
+    eta = df["eta"].values * 100
+
+    # Climbing bars + connecting line.
+    colors = [_RED] + [_ORANGE] * (len(df) - 2) + [_GREEN]
+    ax.bar(x, eta, width=0.6, color=colors, alpha=0.8)
+    ax.plot(x, eta, "o-", color="k", lw=1.2, ms=5)
+    for i in range(len(df)):
+        ax.annotate(f"{eta[i]:.0f}%\nVoc {df.iloc[i]['voc_v']:.2f}V\nERE {df.iloc[i]['ere']:.0e}",
+                    (x[i], eta[i]), textcoords="offset points", xytext=(0, 6),
+                    ha="center", fontsize=7.5)
+    # Reference: silicon-grade commercial cell.
+    ax.axhline(22, color=_BLUE, ls="--", lw=1.2)
+    ax.annotate("today's commercial silicon (~22%)", (0, 22.6), fontsize=8, color=_BLUE)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([s.replace("+ ", "+\n") for s in df["stage"]], fontsize=8)
+    ax.set_ylabel("Efficiency (%)")
+    ax.set_ylim(0, 32)
+    ax.set_title("Cracking pyrite: each voltage repair turns 'fool's gold' more golden")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig28_pyrite_roadmap.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path

@@ -58,17 +58,48 @@ effectively **unlimited** (iron and sulfur are mined in billions of tonnes per
 year). A 20%-efficient pyrite cell would be worth more to the energy transition
 than a 35%-efficient tandem that indium can never scale.
 
-## 4. Why it is hard, and what would crack it
+## 4. The roadmap: a quantified plan to crack it
+
+"Cure the voltage" is too vague to act on, so the toolkit turns it into a ladder.
+Each rung is a real, physically-motivated intervention — the same family of moves
+that tamed silicon and perovskites — and the model reports exactly how much
+efficiency each one would unlock by raising the external radiative efficiency (ERE):
+
+| Intervention (cumulative) | Voc | Efficiency | What it fixes |
+| --- | --- | --- | --- |
+| Today's pyrite cell | 0.18 V | 6% | A sulfur-poor, metallic-like surface layer pins the Fermi level and shorts the voltage. |
+| + Surface passivation | 0.30 V | 11% | Restore surface stoichiometry / cap with a passivating layer to unpin the surface. |
+| + Bulk sulfur-vacancy control | 0.42 V | 17% | Sulfur-rich growth and annealing to remove the deep traps inside the crystal. |
+| + Phase-pure films | 0.48 V | 20% | Eliminate marcasite / pyrrhotite secondary phases that leak current. |
+| + Carrier-selective contacts | 0.60 V | 25% | Add electron- and hole-selective transport layers (the heterojunction / perovskite lesson) so the junction no longer relies on pyrite's own surface. |
+
+
+![The pyrite voltage roadmap](figures/fig28_pyrite_roadmap.png)
+
+Read it as a research program. The single most important step is **carrier-selective
+contacts** — the lesson stolen from heterojunction silicon and perovskites: instead
+of begging pyrite's own broken surface to form a good junction, you sandwich it
+between dedicated electron- and hole-collecting layers, so the voltage no longer
+depends on the surface that has always wrecked it. That one architectural move does
+most of the work, lifting pyrite past **20%** — into commercial-silicon territory,
+from iron and sulfur.
+
+**Have researchers tried?** Yes — for decades, every rung on this ladder has been
+attempted, and pyrite has stubbornly resisted, which is why it remains a lab
+curiosity. What the toolkit adds is not a cure but a *target*: it says precisely how
+good each fix must get (an ERE of ~1e-2, a Voc of ~0.6 V) for pyrite to graduate
+from hopeless to competitive. That turns a romantic "what if" into a measurable
+engineering goal — the first thing any serious attempt needs.
+
+## 5. Why it is hard
 
 The voltage problem is widely attributed to the pyrite *surface* (a sulfur-poor,
-metallic-like layer) and to bulk sulfur vacancies. The levers are the same ones
-that tamed silicon and perovskites: surface passivation, precise stoichiometry
-control, and grain/interface engineering — raising ERE by the ~5 orders of
-magnitude that stand between today's cells and the cliff edge. This is a
-materials-science moonshot, not a thermodynamic impossibility: the physics
+metallic-like layer) and to bulk sulfur vacancies. The levers above raise ERE by the
+~7 orders of magnitude that stand between today's cells and a competitive one. This
+is a materials-science moonshot, not a thermodynamic impossibility: the physics
 permits 31%; only the defects forbid it.
 
-## 5. Assumptions and limitations
+## 6. Assumptions and limitations
 
 - The ERE model captures the *voltage* loss (the dominant, defining failure) but
   assumes ideal current collection and no shunt/series losses, so it is an upper
@@ -77,7 +108,7 @@ permits 31%; only the defects forbid it.
   qualitative cliff and the size of the prize are robust to the exact figures.
 - One bandgap (0.95 eV) and the standard AM1.5G spectrum.
 
-## 6. References
+## 7. References
 
 - M. A. Green, *Radiative efficiency of state-of-the-art photovoltaic cells*,
   Prog. Photovolt. 20 (2012) — the ERE framework.
