@@ -886,3 +886,101 @@ def fig23_inversion(flex_df, enduse_df, cheap_price, grid_price,
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part X: solar off-world (space-based solar power)
+# ---------------------------------------------------------------------------
+
+def fig24_sbsp(curves: dict, refs: dict, markers: dict, outdir: str | Path) -> Path:
+    """SBSP LCOE vs launch cost, against firm-terrestrial benchmarks."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    colors = [_GREEN, _BLUE, _PURPLE]
+    for (label, df), col in zip(curves.items(), colors):
+        ax.plot(df["launch_cost_per_kg"], df["lcoe_usd_mwh"], "-", color=col,
+                lw=2.2, label=f"SBSP — {label}")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+
+    ax.axhline(refs["firm_high"], color=_ORANGE, ls="--", lw=1.4,
+               label=f"Firm terrestrial, high-resource (${refs['firm_high']:.0f})")
+    ax.axhline(refs["firm_moderate"], color=_RED, ls="--", lw=1.4,
+               label=f"Firm terrestrial, moderate (${refs['firm_moderate']:.0f})")
+    ax.axhline(refs["raw"], color=_GREY, ls=":", lw=1.2,
+               label=f"Raw daytime solar (${refs['raw']:.0f})")
+
+    for label, x in markers.items():
+        ax.axvline(x, color="k", ls="-.", lw=1, alpha=0.6)
+        ax.annotate(label, (x, ax.get_ylim()[1] * 0.7), rotation=90,
+                    fontsize=7.5, ha="right", va="top")
+
+    ax.set_xlabel("Launch cost to orbit ($/kg, log scale)")
+    ax.set_ylabel("Levelized cost of energy ($/MWh, log scale)")
+    ax.set_title("Solar where the sun never sets: SBSP undercuts firm solar at low launch cost")
+    ax.legend(fontsize=7.8, loc="upper left")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig24_sbsp.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+# ---------------------------------------------------------------------------
+# Part XI: the trajectory (Wright's law)
+# ---------------------------------------------------------------------------
+
+def fig25_trajectory(hist_fit, proj_df, fit, milestones, outdir: str | Path) -> Path:
+    """(a) Wright's law log-log fit; (b) module price & LCOE trajectory to 2050."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+
+    # (a) Wright's law: price vs cumulative capacity (log-log).
+    h = hist_fit
+    ax1.scatter(h["cumulative_gw"], h["module_price_usd_per_w"], color=_BLUE,
+                zorder=5, label="Historical (2010-2024)")
+    xs = np.logspace(np.log10(h["cumulative_gw"].min()),
+                     np.log10(proj_df["cumulative_gw"].max()), 50)
+    ax1.plot(xs, np.exp(fit["a"]) * xs ** fit["b"], color=_RED, lw=2,
+             label=f"Wright's law (LR {fit['learning_rate']*100:.0f}%/doubling)")
+    ax1.set_xscale("log")
+    ax1.set_yscale("log")
+    ax1.set_xlabel("Cumulative installed capacity (GW, log)")
+    ax1.set_ylabel("Module price ($/W, log)")
+    ax1.set_title("(a) Fifty years on one line: Wright's law")
+    ax1.legend(fontsize=8)
+
+    # (b) trajectory vs year.
+    hist = proj_df[proj_df["kind"] == "actual"]
+    proj = proj_df[proj_df["kind"] == "projected"]
+    ax2.plot(hist["year"], hist["module_price_usd_per_w"], color=_BLUE, lw=2)
+    ax2.plot(proj["year"], proj["module_price_usd_per_w"], color=_BLUE, lw=2,
+             ls="--", label="Module price ($/W)")
+    ax2.set_xlabel("Year")
+    ax2.set_ylabel("Module price ($/W)", color=_BLUE)
+    ax2.tick_params(axis="y", labelcolor=_BLUE)
+
+    ax2b = ax2.twinx()
+    ax2b.plot(hist["year"], hist["lcoe_usd_mwh"], color=_GREEN, lw=2)
+    ax2b.plot(proj["year"], proj["lcoe_usd_mwh"], color=_GREEN, lw=2, ls="--",
+              label="Utility LCOE ($/MWh)")
+    ax2b.set_ylabel("Utility LCOE ($/MWh)", color=_GREEN)
+    ax2b.tick_params(axis="y", labelcolor=_GREEN)
+    ax2b.grid(False)
+    ax2b.set_ylim(0, max(proj_df["lcoe_usd_mwh"].max() * 1.1, 60))
+
+    for t, yr in milestones.items():
+        if yr:
+            ax2b.annotate(f"<${t:.0f}/MWh\n{yr}", (yr, t), fontsize=7.5,
+                          color=_GREEN, ha="center")
+    ax2.set_title("(b) The panel becomes nearly free; LCOE floors on balance-of-system")
+    lines = ax2.get_legend_handles_labels()[0] + ax2b.get_legend_handles_labels()[0]
+    ax2.legend(lines, [l.get_label() for l in lines], fontsize=8, loc="upper right")
+
+    fig.suptitle("Where solar is going: the cheapest energy humanity has ever made",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig25_trajectory.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path

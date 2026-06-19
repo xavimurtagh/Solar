@@ -110,6 +110,14 @@ def _cmd_power2x(args) -> int:
     return 0
 
 
+def _cmd_space(args) -> int:
+    from .report_space import generate_space
+
+    path = generate_space(Path(args.outdir))
+    print(f"Wrote {path} and space figure in {args.outdir}/figures/")
+    return 0
+
+
 def _cmd_all(args) -> int:
     from .report import generate
     from .report_circ import generate_circularity
@@ -119,6 +127,7 @@ def _cmd_all(args) -> int:
     from .report_opt import generate_optimizer
     from .report_power2x import generate_power2x
     from .report_pyrite import generate_pyrite
+    from .report_space import generate_space
     from .report_value import generate_value
 
     generate(Path(args.outdir))
@@ -130,6 +139,7 @@ def _cmd_all(args) -> int:
     generate_value(Path(args.outdir))
     generate_firming(Path(args.outdir))
     generate_power2x(Path(args.outdir))
+    generate_space(Path(args.outdir))
     print(f"Wrote all reports and figures in {args.outdir}/")
     return 0
 
@@ -188,6 +198,7 @@ def main(argv=None) -> int:
     sub.add_parser("value", help="the value of time / deflation (Part VII)")
     sub.add_parser("firming", help="firm 24/7 solar+storage cost (Part VIII)")
     sub.add_parser("power2x", help="solar-to-molecules / power-to-X (Part IX)")
+    sub.add_parser("space", help="space-based solar power (Part X)")
     sub.add_parser("all", help="generate every report and all figures")
     sub.add_parser("figures", help="generate Part I figures only")
     sub.add_parser("validate", help="run quick physics + data checks")
@@ -197,8 +208,8 @@ def main(argv=None) -> int:
     return {"report": _cmd_report, "economics": _cmd_economics,
             "circularity": _cmd_circularity, "land": _cmd_land,
             "optimize": _cmd_optimize, "pyrite": _cmd_pyrite, "value": _cmd_value,
-            "firming": _cmd_firming, "power2x": _cmd_power2x, "all": _cmd_all,
-            "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
+            "firming": _cmd_firming, "power2x": _cmd_power2x, "space": _cmd_space,
+            "all": _cmd_all, "figures": _cmd_figures, "validate": _cmd_validate}[command](args)
 
 
 if __name__ == "__main__":  # pragma: no cover
