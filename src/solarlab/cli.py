@@ -158,6 +158,14 @@ def _cmd_collection(args) -> int:
     return 0
 
 
+def _cmd_storage(args) -> int:
+    from .report_storage import generate_storage
+
+    path = generate_storage(Path(args.outdir))
+    print(f"Wrote {path} and storage figure in {args.outdir}/figures/")
+    return 0
+
+
 def _cmd_all(args) -> int:
     from .report import generate
     from .report_circ import generate_circularity
@@ -173,6 +181,7 @@ def _cmd_all(args) -> int:
     from .report_collection import generate_collection
     from .report_space import generate_space
     from .report_spacedeep import generate_spacedeep
+    from .report_storage import generate_storage
     from .report_value import generate_value
 
     generate(Path(args.outdir))
@@ -190,6 +199,7 @@ def _cmd_all(args) -> int:
     generate_renewable(Path(args.outdir))
     generate_spacedeep(Path(args.outdir))
     generate_collection(Path(args.outdir))
+    generate_storage(Path(args.outdir))
     print(f"Wrote all reports and figures in {args.outdir}/")
     return 0
 
@@ -254,6 +264,7 @@ def main(argv=None) -> int:
     sub.add_parser("renewable", help="can solar be truly renewable? (Part XIII)")
     sub.add_parser("spacedeep", help="space solar: climate, beam, scale (Part XV)")
     sub.add_parser("collection", help="the panel-collection problem (Part XVI)")
+    sub.add_parser("storage", help="storing the midday sun: duration bottleneck (Part XVII)")
     sub.add_parser("all", help="generate every report and all figures")
     sub.add_parser("figures", help="generate Part I figures only")
     sub.add_parser("validate", help="run quick physics + data checks")
@@ -266,7 +277,7 @@ def main(argv=None) -> int:
             "firming": _cmd_firming, "power2x": _cmd_power2x, "space": _cmd_space,
             "future": _cmd_future, "metal": _cmd_metal, "renewable": _cmd_renewable,
             "spacedeep": _cmd_spacedeep, "collection": _cmd_collection,
-            "all": _cmd_all, "figures": _cmd_figures,
+            "storage": _cmd_storage, "all": _cmd_all, "figures": _cmd_figures,
             "validate": _cmd_validate}[command](args)
 
 

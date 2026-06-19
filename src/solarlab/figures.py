@@ -1211,3 +1211,55 @@ def fig30_collection(runway_df, thrift_df, regional, econ, outdir: str | Path) -
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part XVII: storing the midday sun (the duration bottleneck)
+# ---------------------------------------------------------------------------
+
+def fig31_storage(lcos_df, techs, outdir: str | Path) -> Path:
+    """(a) LCOS vs duration crossover; (b) the power-vs-energy cost split."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+    palette = [_BLUE, _PURPLE, _GREY, _GREEN, _ORANGE, _RED]
+
+    # (a) LCOS vs duration.
+    d = lcos_df["duration_h"].values
+    for t, col in zip(techs, palette):
+        ax1.plot(d, lcos_df[t.name].clip(upper=600), "-", color=col, lw=2,
+                 label=t.name.split(" (")[0])
+    ax1.set_xscale("log")
+    ax1.set_yscale("log")
+    ax1.set_xlabel("Storage duration (hours, log)")
+    ax1.set_ylabel("Levelized cost of storage ($/MWh, log)")
+    # Duration-regime backdrop.
+    ax1.axvspan(1, 12, color=_BLUE, alpha=0.05)
+    ax1.axvspan(12, 240, color=_GREEN, alpha=0.05)
+    ax1.axvspan(240, 3000, color=_RED, alpha=0.05)
+    for x, lab in [(4, "hours\n(daily)"), (60, "days"), (1000, "seasonal")]:
+        ax1.annotate(lab, (x, 460), fontsize=7.5, ha="center", color=_GREY)
+    ax1.set_title("(a) No single winner: cost crosses over with duration")
+    ax1.legend(fontsize=7, loc="upper left", ncol=2)
+
+    # (b) the two costs that decide everything.
+    for t, col in zip(techs, palette):
+        ax2.scatter(t.energy_cost_usd_kwh, t.power_cost_usd_kw, s=90, color=col,
+                    edgecolors="k", linewidths=0.5, zorder=5)
+        ax2.annotate(t.name.split(" (")[0], (t.energy_cost_usd_kwh, t.power_cost_usd_kw),
+                     textcoords="offset points", xytext=(6, 4), fontsize=7.5)
+    ax2.set_xscale("log")
+    ax2.set_xlabel("Energy capacity cost ($/kWh)  →  dearer for long duration")
+    ax2.set_ylabel("Power cost ($/kW)  →  dearer for short bursts")
+    ax2.annotate("cheap to hold for months\n(seasonal winners) →", (3, 1700),
+                 fontsize=7.5, color=_RED)
+    ax2.annotate("← cheap per kWh\nfor daily cycling", (180, 250),
+                 fontsize=7.5, color=_BLUE, ha="right")
+    ax2.set_title("(b) Why: every store has two costs")
+
+    fig.suptitle("Storing the midday sun: the bottleneck is duration, not storage",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig31_storage.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
