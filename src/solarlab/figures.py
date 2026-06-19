@@ -950,15 +950,17 @@ def fig25_trajectory(hist_fit, proj_df, fit, milestones, outdir: str | Path) -> 
     ax1.set_title("(a) Fifty years on one line: Wright's law")
     ax1.legend(fontsize=8)
 
-    # (b) trajectory vs year.
-    hist = proj_df[proj_df["kind"] == "actual"]
-    proj = proj_df[proj_df["kind"] == "projected"]
+    # (b) trajectory vs year (from 2010, where real data and sane projections live).
+    recent = proj_df[proj_df["year"] >= 2010]
+    hist = recent[recent["kind"] == "actual"]
+    proj = recent[recent["kind"] == "projected"]
     ax2.plot(hist["year"], hist["module_price_usd_per_w"], color=_BLUE, lw=2)
     ax2.plot(proj["year"], proj["module_price_usd_per_w"], color=_BLUE, lw=2,
              ls="--", label="Module price ($/W)")
     ax2.set_xlabel("Year")
     ax2.set_ylabel("Module price ($/W)", color=_BLUE)
     ax2.tick_params(axis="y", labelcolor=_BLUE)
+    ax2.set_ylim(0, hist["module_price_usd_per_w"].max() * 1.1)
 
     ax2b = ax2.twinx()
     ax2b.plot(hist["year"], hist["lcoe_usd_mwh"], color=_GREEN, lw=2)
@@ -967,7 +969,7 @@ def fig25_trajectory(hist_fit, proj_df, fit, milestones, outdir: str | Path) -> 
     ax2b.set_ylabel("Utility LCOE ($/MWh)", color=_GREEN)
     ax2b.tick_params(axis="y", labelcolor=_GREEN)
     ax2b.grid(False)
-    ax2b.set_ylim(0, max(proj_df["lcoe_usd_mwh"].max() * 1.1, 60))
+    ax2b.set_ylim(0, recent["lcoe_usd_mwh"].max() * 1.1)
 
     for t, yr in milestones.items():
         if yr:

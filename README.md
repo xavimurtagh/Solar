@@ -1,22 +1,31 @@
-# solarlab — why solar panels are ~20% efficient, and how to change that
+# solarlab — from "why are solar panels only ~20% efficient?" to changing the sphere of energy
 
 A typical rooftop solar panel converts only about a fifth of the sunlight that
-hits it into electricity. **Why?** And **how do we do better?**
+hits it into electricity. That question turned into eleven, each answered from
+first principles — the toolkit *computes* the physics and economics rather than
+quoting them — and generates eleven cited reports with 25 figures. Every number is
+calculated here or carried with its source.
 
-This toolkit answers both from first principles — it *computes* the physics
-rather than quoting it — and generates a fully cited report with the figures
-below. Every number is either calculated here or carried with its source.
+The arc: the binding constraint on solar keeps moving — **efficiency → cost →
+materials → value/timing → end-use** — and the project follows it all the way to
+"The Great Inversion": solar has won on cost, so the future is about reshaping
+demand around the sun, not the sun around demand.
 
 ```bash
 pip install -e ".[dev]"
-python -m solarlab report       # Part I:   efficiency physics  -> REPORT.md + figs 1-5
-python -m solarlab economics    # Part II:  cost & materials    -> REPORT_ECONOMICS.md + figs 6-10
-python -m solarlab circularity  # Part III: recycling           -> REPORT_CIRCULARITY.md + figs 11-13
-python -m solarlab land         # Part IV:  land use / dual-use  -> REPORT_LAND.md + figs 14-15
-python -m solarlab optimize     # Part V:   the optimiser        -> REPORT_OPTIMIZER.md + fig 16
-python -m solarlab pyrite       # Part VI:  the pyrite problem    -> REPORT_PYRITE.md + fig 17
-python -m solarlab all          # every report, all 17 figures
-pytest                          # 106 tests pin the numbers to published values
+python -m solarlab report       # Part I:    efficiency physics   -> REPORT.md + figs 1-5
+python -m solarlab economics    # Part II:   cost & materials     -> REPORT_ECONOMICS.md + figs 6-10
+python -m solarlab circularity  # Part III:  recycling            -> REPORT_CIRCULARITY.md + figs 11-13
+python -m solarlab land         # Part IV:   land use / dual-use  -> REPORT_LAND.md + figs 14-15
+python -m solarlab optimize     # Part V:    the optimiser        -> REPORT_OPTIMIZER.md + fig 16
+python -m solarlab pyrite       # Part VI:   the pyrite problem   -> REPORT_PYRITE.md + fig 17
+python -m solarlab value        # Part VII:  the value of time    -> REPORT_VALUE.md + figs 18-19
+python -m solarlab firming      # Part VIII: firm 24/7 solar      -> REPORT_FIRMING.md + figs 20-21
+python -m solarlab power2x      # Part IX:   solar-to-molecules   -> REPORT_POWER2X.md + figs 22-23
+python -m solarlab space        # Part X:    space-based solar    -> REPORT_SPACE.md + fig 24
+python -m solarlab future       # Part XI:   trajectory + manifesto -> REPORT_FUTURE.md + fig 25
+python -m solarlab all          # every report, all 25 figures
+pytest                          # 149 tests pin the numbers to published values
 
 # the optimiser is also an interactive tool:
 python -m solarlab optimize --area 40 --budget 80000 --deployment residential
@@ -143,6 +152,37 @@ to ~0.2 V). The prize: cure the surface defects to silicon-grade quality and pyr
 reaches **22–25%** — a cheap, infinitely-scalable cell. The physics permits 31%;
 only the defects forbid it. See [`output/REPORT_PYRITE.md`](output/REPORT_PYRITE.md).
 
+## Parts VII–XI — The Great Inversion: from cheap electrons to a new energy substrate
+
+The first six parts optimise the *supply* of solar electrons. The 2026 frontier
+says that problem is essentially solved — and a new one has taken its place. Solar
+has **won the cost war but is losing the value war**: its electrons are cheapest
+exactly when they're least valuable.
+
+- **Part VII — the value of time.** An hourly market model shows solar's value
+  factor collapsing as it scales (to ~0.55 at 30% penetration, matching California
+  today), with curtailment climbing — the integration wall that LCOE hides.
+  ![Value deflation](output/figures/fig18_value_deflation.png)
+- **Part VIII — firming.** Hourly battery dispatch puts dispatchable 24/7 solar at
+  **~$59–72/MWh** (high-resource), beating new gas and coal — but the last few
+  percent of reliability is a cost cliff.
+- **Part IX — solar as feedstock.** The deepest reframe: stop storing electrons,
+  start making molecules. Flexible electrolysis eats the curtailed glut (34%→12%)
+  and near-free solar collapses the cost of hydrogen, ammonia, fuels, water, carbon
+  removal and compute.
+- **Part X — solar off-world.** Space-based solar runs ~95% capacity factor, so it
+  competes with *firm* terrestrial solar; at Starship-class launch (~$100/kg) it
+  reaches **$35–103/MWh** — a launch-cost bet, not a physics one.
+- **Part XI — the trajectory & capstone.** Wright's law (fitted 36%/doubling,
+  R²=0.994) drives the module toward near-free while LCOE floors on balance-of-
+  system. The capstone manifesto ties all eleven parts into one argument about how
+  solar changes civilization — with every step past the data flagged.
+
+![Where solar is going](output/figures/fig25_trajectory.png)
+
+The through-line: **stop shaping solar to fit demand; start shaping demand to fit
+the sun.** Full write-up in [`output/REPORT_FUTURE.md`](output/REPORT_FUTURE.md).
+
 ## How it works
 
 | Module | Role |
@@ -160,7 +200,12 @@ only the defects forbid it. See [`output/REPORT_PYRITE.md`](output/REPORT_PYRITE
 | `landuse.py` | land-use efficiency, Land Equivalent Ratio, diurnal grid value |
 | `optimizer.py` | constrained pick of technology + deployment for a goal |
 | `sq.py` (ERE) | non-ideal device model for the pyrite voltage problem |
-| `figures.py` / `report*.py` / `cli.py` | 17 figures, six reports, entry point |
+| `value.py` | hourly value-of-solar / value-deflation model |
+| `firming.py` | battery dispatch + levelized cost of firm 24/7 solar |
+| `power2x.py` | green-hydrogen / power-to-X economics, demand inversion |
+| `spacepv.py` | space-based solar launch-cost economics |
+| `learning.py` | Wright's-law fit and cost trajectory to 2050 |
+| `figures.py` / `report*.py` / `cli.py` | 25 figures, eleven reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction
