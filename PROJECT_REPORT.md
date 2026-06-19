@@ -149,8 +149,36 @@ hour: **round-the-clock solar-plus-battery already costs about 7¢/kWh** at a su
 site — cheaper than a *new* gas or coal plant. But there's a cliff: going from
 "reliable 90% of the time" to "99%" roughly *doubles* the cost, because covering rare
 cloudy weeks needs a huge, mostly-idle pile of batteries. **Chasing 100% solar-only
-is the most expensive energy you can buy.** Store the easy 80-90%; handle the rest
-another way.
+is the most expensive energy you can buy.**
+
+So I dug into *why* that cliff is there — and it turns out "storage" is the wrong
+word, because there isn't one storage problem; there are two, and they need totally
+different machines. The trick is that every way of storing energy has **two** prices:
+how fast it can charge and discharge (per kilowatt), and how much it can hold (per
+kilowatt-hour). A lithium battery is cheap to charge fast but **expensive to hold a
+lot** — perfect for a few hours, hopeless for weeks. So:
+
+- **Storing for a few hours** (noon → night) is essentially *solved* — lithium
+  batteries do it cheaply and efficiently, which is why they're booming.
+- **Storing for days** (a windless, cloudy stretch) is the awkward middle — new
+  technologies like "iron-air" (rusting and un-rusting iron) or heating cheap rock
+  are emerging but young.
+- **Storing for months** (sunny summer → dark winter) is the real wall. A lithium
+  battery's cost *explodes* — from about $124 to make power for an hour-scale store
+  up to **$5,000** for a season-scale one. The only thing cheap enough to hold energy
+  for months is **hydrogen** (made by splitting water, stored in underground caverns),
+  even though it wastes more than half the energy — because if you barely use it, what
+  matters is the cost to *hold* it, not the efficiency.
+
+The bottleneck, then, isn't "storage" — it's **long-duration** storage, and the fix
+is to stop using one tool for every job: lithium for hours, iron and heat for days,
+hydrogen for seasons. And two things genuinely surprised me. First, when the energy
+you're storing is *free* (the curtailed midday glut nobody wanted), efficiency stops
+mattering at all — so the cheapest, leakiest store wins even for short jobs. Second,
+the cheapest "storage" is often **not storing electricity at all** — it's using it the
+instant it arrives (the next section), or storing the *product* — hydrogen, heat,
+fresh water — which are all far cheaper to keep than electrons. Store the molecule,
+not the electron.
 
 ### Answer 2 — Use it: make molecules, not just electrons
 
@@ -334,7 +362,7 @@ reuse, and build around the one we already have.
 
 ---
 
-*Everything above is drawn from the sixteen analyses in this repository, each of which
+*Everything above is drawn from the seventeen analyses in this repository, each of which
 computes its numbers from physics and economics rather than asserting them, and checks
 them against real-world 2026 data. For the technical versions, see the
 `output/REPORT_*.md` files; for the deep synthesis, see

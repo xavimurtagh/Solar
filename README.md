@@ -1,9 +1,9 @@
 # solarlab — from "why are solar panels only ~20% efficient?" to changing the sphere of energy
 
 A typical rooftop solar panel converts only about a fifth of the sunlight that
-hits it into electricity. That question turned into eleven, each answered from
+hits it into electricity. That question turned into seventeen, each answered from
 first principles — the toolkit *computes* the physics and economics rather than
-quoting them — and generates eleven cited reports with 25 figures. Every number is
+quoting them — and generates sixteen cited reports with 31 figures. Every number is
 calculated here or carried with its source.
 
 The arc: the binding constraint on solar keeps moving — **efficiency → cost →
@@ -33,8 +33,9 @@ python -m solarlab renewable    # Part XIII: truly renewable?       -> REPORT_RE
 python -m solarlab pyrite       # Part XIV:  pyrite voltage roadmap -> (+ fig 28 in REPORT_PYRITE.md)
 python -m solarlab spacedeep    # Part XV:   space solar, seriously -> REPORT_SPACEDEEP.md + fig 29
 python -m solarlab collection   # Part XVI:  the collection problem  -> REPORT_COLLECTION.md + fig 30
-python -m solarlab all          # every report, all 30 figures
-pytest                          # 185 tests pin the numbers to published values
+python -m solarlab storage      # Part XVII: storing the midday sun  -> REPORT_STORAGE.md + fig 31
+python -m solarlab all          # every report, all 31 figures
+pytest                          # 194 tests pin the numbers to published values
 
 # the optimiser is also an interactive tool:
 python -m solarlab optimize --area 40 --budget 80000 --deployment residential
@@ -243,7 +244,8 @@ Four analyses that pressure-test the project's own claims:
 | `pyrite.py` | the pyrite voltage-repair roadmap |
 | `spacedeep.py` | space-solar launch carbon, beaming chain, scalability |
 | `collection.py` | end-of-life collection rate, recycling economics |
-| `figures.py` / `report*.py` / `cli.py` | 30 figures, fifteen reports, entry point |
+| `storage.py` | levelized cost of storage vs duration, the bottleneck |
+| `figures.py` / `report*.py` / `cli.py` | 31 figures, sixteen reports, entry point |
 
 The physics is validated against published values: the 33.7% peak at 1.34 eV
 (Rühle 2016), silicon's ~44 mA/cm² short-circuit current, the ideal two-junction
