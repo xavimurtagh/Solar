@@ -813,3 +813,76 @@ def fig21_firm_cost(moderate_df, high_df, refs: dict, outdir: str | Path) -> Pat
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------------------
+# Part IX: solar as feedstock (power-to-X)
+# ---------------------------------------------------------------------------
+
+def fig22_lcoh(curves: dict, refs: dict, ppa_band, outdir: str | Path) -> Path:
+    """Levelized cost of green hydrogen vs electricity price, by scenario."""
+    _style()
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    colors = [_BLUE, _GREEN, _ORANGE]
+    for (label, df), col in zip(curves.items(), colors):
+        ax.plot(df["elec_price_usd_mwh"], df["lcoh_usd_kg"], "o-", color=col,
+                lw=2, ms=4, label=label)
+    ax.axhspan(refs["grey"], refs["blue"], color=_GREY, alpha=0.15)
+    ax.annotate(f"fossil H2 (grey ${refs['grey']:.1f} / blue ${refs['blue']:.1f})",
+                (2, refs["blue"] + 0.05), fontsize=8, color=_GREY)
+    ax.axvspan(ppa_band[0], ppa_band[1], color=_GREEN, alpha=0.10)
+    ax.annotate("solar PPA\n$15-25/MWh", ((ppa_band[0]+ppa_band[1])/2, 5.6),
+                ha="center", fontsize=8, color=_GREEN)
+    ax.set_xlabel("Electricity price ($/MWh)")
+    ax.set_ylabel("Levelized cost of hydrogen ($/kg)")
+    ax.set_title("Cheap solar makes cheap molecules: green hydrogen approaches fossil parity")
+    ax.set_ylim(0, 6)
+    ax.legend(fontsize=8.5, loc="upper left")
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig22_lcoh.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def fig23_inversion(flex_df, enduse_df, cheap_price, grid_price,
+                    outdir: str | Path) -> Path:
+    """(a) flexible demand rescues the curtailed glut; (b) the end-use unlock."""
+    _style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
+
+    p = flex_df["penetration"] * 100
+    ax1.fill_between(p, flex_df["curtailment_base"] * 100, color=_RED, alpha=0.25)
+    ax1.plot(p, flex_df["curtailment_base"] * 100, color=_RED, lw=2,
+             label="Curtailed (wasted)")
+    ax1.plot(p, flex_df["curtailment_flex"] * 100, color=_GREEN, lw=2,
+             label="Curtailed after flexible electrolysis")
+    ax1.fill_between(p, flex_df["curtailment_flex"] * 100,
+                     flex_df["curtailment_base"] * 100, color=_GREEN, alpha=0.2,
+                     label="Glut captured → hydrogen")
+    ax1.set_xlabel("Solar share of annual demand (%)")
+    ax1.set_ylabel("Solar curtailment (%)")
+    ax1.set_title("(a) Flexible demand eats the glut")
+    ax1.legend(fontsize=8, loc="upper left")
+
+    d = enduse_df.copy()
+    y = np.arange(len(d))
+    ax2.barh(y + 0.2, d["elec_cost_grid"], 0.4, color=_RED, alpha=0.8,
+             label=f"Grid power (${grid_price:.0f}/MWh)")
+    ax2.barh(y - 0.2, d["elec_cost_cheap"], 0.4, color=_GREEN, alpha=0.85,
+             label=f"Cheap solar (${cheap_price:.0f}/MWh)")
+    ax2.set_yticks(y)
+    ax2.set_yticklabels([f"{r['product']}\n(per {r['unit']})" for _, r in d.iterrows()],
+                        fontsize=7.5)
+    ax2.set_xscale("log")
+    ax2.set_xlabel("Electricity cost per unit of output ($, log scale)")
+    ax2.set_title("(b) What near-free solar unlocks")
+    ax2.legend(fontsize=8, loc="lower right")
+
+    fig.suptitle("The inversion: shape demand around solar, and make molecules from the glut",
+                 fontsize=12)
+    fig.tight_layout()
+    path = _outdir(outdir) / "fig23_inversion.png"
+    fig.savefig(path)
+    plt.close(fig)
+    return path
