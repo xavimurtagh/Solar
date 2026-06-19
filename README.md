@@ -11,6 +11,10 @@ materials → value/timing → end-use** — and the project follows it all the 
 "The Great Inversion": solar has won on cost, so the future is about reshaping
 demand around the sun, not the sun around demand.
 
+**New here?** Start with [`PROJECT_REPORT.md`](PROJECT_REPORT.md) — a plain-language
+tour of everything this project discovered, written for someone with no background
+in solar. No jargon, no math required.
+
 ```bash
 pip install -e ".[dev]"
 python -m solarlab report       # Part I:    efficiency physics   -> REPORT.md + figs 1-5
